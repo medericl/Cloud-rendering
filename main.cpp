@@ -21,9 +21,9 @@
 std::vector<Sphere> vector_sphere()
 {
     std::vector<Sphere> spheres = {
-        Sphere(Point3(-200, 55, 0), 50, Color(30,130,30)), // red
-        Sphere(Point3(0, 55, 0), 51, Color(30,30,130)), // red
-        Sphere(Point3(0, 55, 0), 52, Color(130,30,30)), // red
+        //Sphere(Point3(-200, 55, 0), 50, Color(30,130,30)), // red
+        //Sphere(Point3(0, 55, 0), 51, Color(30,30,130)), // red
+        //Sphere(Point3(0, 55, 0), 52, Color(130,30,30)), // red
     };
     return spheres;
 }
@@ -51,16 +51,16 @@ std::vector<Light> vector_light()
 
 static void render_to_pixels(int width, int height, float x_offset, std::vector<unsigned char>& pixels, Scene& scene)
 {
-    for (auto& s : scene.list_sphere)
-    {
-        if (s.radius == 51)
-            s.center.x = x_offset;
-        //if (s.radius == 52)
-        //{
-        //    s.center.z = x_offset;
-        //    s.center.y = std::abs(x_offset) / 2;
-        //}
-    }
+    //for (auto& s : scene.list_sphere)
+    //{
+    //    if (s.radius == 51)
+    //        s.center.x = x_offset;
+    //    //if (s.radius == 52)
+    //    //{
+    //    //    s.center.z = x_offset;
+    //    //    s.center.y = std::abs(x_offset) / 2;
+    //    //}
+    //}
 
     Image image(width, height);
     scene.ray_tracing(image);

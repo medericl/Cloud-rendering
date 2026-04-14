@@ -1,12 +1,12 @@
 la base:
 
-densité
-falloff vertical
+densité OK
+falloff vertical OK
 
 2. forme
-fbm simple
-bruit
-animation
+fbm simple OK
+bruit OK
+animation OK
 
 3. Sortir du look “mousse”
 double noise / érosion simple
@@ -19,16 +19,9 @@ Worley
 lightmarch léger
 
 
-FBM simple
 Érosion simple avec un 2e bruit
-Animation lente
 Blobs / forme globale plus jolie
-Worley si nécessaire
-Lightmarch cheap
-
 
 faire plusieurs couches
 créer un environnement: des montagnes, forets...
-
-
 creer des avions

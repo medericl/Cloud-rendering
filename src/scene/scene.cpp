@@ -200,7 +200,9 @@ Color Scene::IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t)
         float ti = tStart + i * step;
         Point3 p = origin + ray * ti;
 
+        p = p + w.wind();
 
+        //std::cout << w.wind() << "\n";
         float density = std::max(0.0f, DENSITY * vertical_falloff(p.y) * fmb(p));
         
         accum += transmittance * density * step;
@@ -214,6 +216,7 @@ Color Scene::IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t)
 
 void Scene::ray_tracing(Image& image)
 {
+    w.update();
     // interpole tous les points du plan_image
     // trouve les vecteurs qui partent de l'origine
     Plan_image p_i = camera.plan_image;
@@ -224,7 +227,7 @@ void Scene::ray_tracing(Image& image)
 
     Point3 left = p_i.p_left_up;
     Point3 right = p_i.p_right_up;
-    #pragma omp parallel for schedule(dynamic) // gpu
+    #pragma omp parallel for schedule(dynamic)
     for (int y = 0; y < height; y++) {
         double t_y = y / (double)(height - 1);
         Point3 left_row = left + (p_i.p_left_down - left) * t_y;

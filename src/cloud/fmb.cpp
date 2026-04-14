@@ -78,7 +78,7 @@ float fmb(Point3 p)
     {
         float value = noise(p * frequency);
         sum += amplitude * value;
-        frequency *= 1.2;
+        frequency *= 1.8;
         amplitude *= 0.5;
     }
 

@@ -22,6 +22,7 @@ void render_ui(Scene& scene)
         color_edit("Cloud color",          fog_color);
         ImGui::SliderFloat("Initial frequenciy",    &INITIAL_FREQUENCY,   0.00f,  0.1f,  "%.4f");
         ImGui::SliderFloat("Initial amplitude",    &INITIAL_AMPLITUDE,   0.00f,  10.0f,  "%.4f");
+        ImGui::SliderFloat("Wind Speed",    &WIND_SPEED,   0.0f,  30.0f,  "%.4f");
     }
 
     if (ImGui::CollapsingHeader("Bounding box")) {
