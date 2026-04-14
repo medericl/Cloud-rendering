@@ -1,8 +1,8 @@
 #ifndef SPHERE_HH
 #define SPHERE_HH
 
-#include "vector.hh"
-#include "color.hh"
+#include "../vector/vector.hh"
+#include "../image/color.hh"
 
 class Sphere {
 public:

@@ -3,10 +3,10 @@
 
 #include "camera.hh"
 #include "light.hh"
-#include "image.hh"
+#include "../image/image.hh"
 #include "sphere.hh"
 #include "cube.hh"
-#include "vector.hh"
+#include "../vector/vector.hh"
 
 class Scene {
 public:

@@ -1,5 +1,5 @@
 #include "effect.hh"
-#include "config.hh"
+#include "../scene/config.hh"
 #include <cmath>
 
 float vertical_falloff(float py)

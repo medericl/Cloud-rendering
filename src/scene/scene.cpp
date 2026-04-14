@@ -1,10 +1,10 @@
 #include "scene.hh"
-#include "color.hh"
+#include "../image/color.hh"
 #include "sphere.hh"
-#include "vector.hh"
+#include "../vector/vector.hh"
 #include "config.hh"
-#include "effect.hh"
-#include "fmb.hh"
+#include "../cloud/effect.hh"
+#include "../cloud/fmb.hh"
 
 #include <algorithm>
 #include <cmath>

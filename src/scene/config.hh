@@ -1,5 +1,5 @@
 #pragma once
-#include "color.hh"
+#include "../image/color.hh"
 
 inline float kd = 0.9f;
 inline float ks = 0.33f;

@@ -1,17 +1,17 @@
-#include "config.hh"
-#include "image.hh"
-#include "camera.hh"
-#include "light.hh"
-#include "sphere.hh"
-#include "cube.hh"
-#include "scene.hh"
-#include "vector.hh"
+#include "src/scene/config.hh"
+#include "src/image/image.hh"
+#include "src/scene/camera.hh"
+#include "src/scene/light.hh"
+#include "src/scene/sphere.hh"
+#include "src/scene/cube.hh"
+#include "src/scene/scene.hh"
+#include "src/vector/vector.hh"
 
 #ifndef NO_UI
-#include "ui/ui.hh"
-#include "ui/imgui.h"
-#include "ui/imgui_impl_glfw.h"
-#include "ui/imgui_impl_opengl2.h"
+#include "src/ui/ui.hh"
+#include "src/ui/imgui.h"
+#include "src/ui/imgui_impl_glfw.h"
+#include "src/ui/imgui_impl_opengl2.h"
 #endif
 
 #include <GLFW/glfw3.h>
@@ -21,7 +21,6 @@
 std::vector<Sphere> vector_sphere()
 {
     std::vector<Sphere> spheres = {
-
         Sphere(Point3(-200, 55, 0), 50, Color(30,130,30)), // red
         Sphere(Point3(0, 55, 0), 51, Color(30,30,130)), // red
         Sphere(Point3(0, 55, 0), 52, Color(130,30,30)), // red
@@ -31,9 +30,7 @@ std::vector<Sphere> vector_sphere()
 
 std::vector<Cube> vector_cube()
 {
-    return {
-        Cube(Point3(0, 0, 0), Vector3(400, 12, 400), Color(30, 30, 30)),
-    };
+    return { Cube(Point3(0, 0, 0), Vector3(400, 12, 400), Color(30, 30, 30)), };
 }
 
 std::vector<Light> vector_light()

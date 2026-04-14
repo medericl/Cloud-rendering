@@ -1,4 +1,4 @@
 #pragma once
-#include "../scene.hh"
+#include "../scene/scene.hh"
 
 void render_ui(Scene& scene);

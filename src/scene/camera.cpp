@@ -1,5 +1,5 @@
 #include "camera.hh"
-#include "plan_image.hh"
+#include "../cloud/plan_image.hh"
 #include <cmath>
 
 Camera::Camera() 

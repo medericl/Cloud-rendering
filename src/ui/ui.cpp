@@ -1,5 +1,5 @@
 #include "ui.hh"
-#include "../config.hh"
+#include "../scene/config.hh"
 #include "imgui.h"
 
 static void color_edit(const char* label, Color& c)

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "vector.hh"
-#include "color.hh"
+#include "../vector/vector.hh"
+#include "../image/color.hh"
 
 class Cube {
 public:

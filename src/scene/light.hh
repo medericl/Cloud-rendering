@@ -1,8 +1,8 @@
 #ifndef LIGHT_HH 
 #define LIGHT_HH
 
-#include "vector.hh"
-#include "color.hh"
+#include "../vector/vector.hh"
+#include "../image/color.hh"
 #include "config.hh"
 
 class Light {

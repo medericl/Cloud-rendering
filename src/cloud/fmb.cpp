@@ -1,4 +1,4 @@
-#include "config.hh"
+#include "../scene/config.hh"
 #include "fmb.hh"
 #include <cmath>
 

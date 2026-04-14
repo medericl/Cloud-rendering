@@ -1,6 +1,6 @@
 #include "cube.hh"
-#include "vector.hh"
-#include "color.hh"
+#include "../vector/vector.hh"
+#include "../image/color.hh"
 #include <cmath>
 #include <algorithm>
 

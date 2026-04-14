@@ -2,7 +2,7 @@
 #define PLAN_IMAGE_HH
 
 #include <iostream>
-#include "vector.hh"
+#include "../vector/vector.hh"
 
 class Plan_image {
 public:
