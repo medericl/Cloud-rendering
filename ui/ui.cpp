@@ -14,12 +14,14 @@ static void color_edit(const char* label, Color& c)
 
 void render_ui(Scene& scene)
 {
-    ImGui::Begin("Brouillard");
+    ImGui::Begin("Cloud");
 
-    if (ImGui::CollapsingHeader("Brouillard", ImGuiTreeNodeFlags_DefaultOpen)) {
+    if (ImGui::CollapsingHeader("Cloud", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Density",    &DENSITY,   0.0f,  1.0f,  "%.4f");
         ImGui::SliderInt("Steps",        &FOG_STEPS, 1,     128);
-        color_edit("Fog color",          fog_color);
+        color_edit("Cloud color",          fog_color);
+        ImGui::SliderFloat("Initial frequenciy",    &INITIAL_FREQUENCY,   0.00f,  0.1f,  "%.4f");
+        ImGui::SliderFloat("Initial amplitude",    &INITIAL_AMPLITUDE,   0.00f,  10.0f,  "%.4f");
     }
 
     if (ImGui::CollapsingHeader("Bounding box")) {
@@ -46,6 +48,9 @@ void render_ui(Scene& scene)
         ImGui::SliderFloat("ns",      &ns,      1.0f, 100.0f);
         ImGui::SliderFloat("k_close", &k_close, 0.0001f, 1.0f, "%.4f");
         ImGui::SliderFloat("k_far",   &k_far,   100.0f, 2000.0f);
+    }
+
+    if (ImGui::CollapsingHeader("Scene")) {
         color_edit("Ambient",    ambient_color);
         color_edit("Background", background_color);
         color_edit("Floor",      COLOR_FLOOR);

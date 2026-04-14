@@ -10,12 +10,18 @@ Image::Image(int w, int h)
     : width(w), height(h), pixels(w * h)
 {}
 
+static float clamp(float v) {
+    if (v < 0.0f)   return 0.0f;
+    if (v > 255.0f) return 255.0f;
+    return v;
+}
+
 void Image::setPixel(int x, int y, const Color& c) {
     if (x < 0 || x >= width || y < 0 || y >= height) {
         throw std::runtime_error("wrong widht | height");
         return;
     }
-    pixels[y * width + x] = c;
+    pixels[y * width + x] = Color(clamp(c.r), clamp(c.g), clamp(c.b));
 }
 
 const Color& Image::getPixel(int x, int y) {

@@ -3,6 +3,8 @@
 #include "sphere.hh"
 #include "vector.hh"
 #include "config.hh"
+#include "effect.hh"
+#include "fmb.hh"
 
 #include <algorithm>
 #include <cmath>
@@ -171,7 +173,6 @@ bool intersect_box(const Point3& origin, const Vector3& ray, const Point3& box_m
     return tExit > std::max(tEnter, 0.0f);
 }
 
-
 Color Scene::IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t)
 {
     Point3 boxMin(BOX_MIN_X, BOX_MIN_Y, BOX_MIN_Z);
@@ -197,7 +198,11 @@ Color Scene::IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t)
     for (int i = 0; i < FOG_STEPS; i++)
     {
         float ti = tStart + i * step;
-        float density = DENSITY;
+        Point3 p = origin + ray * ti;
+
+
+        float density = std::max(0.0f, DENSITY * vertical_falloff(p.y) * fmb(p));
+        
         accum += transmittance * density * step;
         transmittance *= std::exp(-density * step);
         if (transmittance <= 0.001f)

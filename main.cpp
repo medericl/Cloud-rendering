@@ -22,9 +22,9 @@ std::vector<Sphere> vector_sphere()
 {
     std::vector<Sphere> spheres = {
 
-        Sphere(Point3(-200, 55, 0), 50, Color(30,30,30)), // red
-        Sphere(Point3(0, 55, 0), 51, Color(30,30,30)), // red
-        Sphere(Point3(0, 55, 0), 52, Color(30,30,30)), // red
+        Sphere(Point3(-200, 55, 0), 50, Color(30,130,30)), // red
+        Sphere(Point3(0, 55, 0), 51, Color(30,30,130)), // red
+        Sphere(Point3(0, 55, 0), 52, Color(130,30,30)), // red
     };
     return spheres;
 }
@@ -58,8 +58,11 @@ static void render_to_pixels(int width, int height, float x_offset, std::vector<
     {
         if (s.radius == 51)
             s.center.x = x_offset;
-        if (s.radius == 52)
-            s.center.z = x_offset;
+        //if (s.radius == 52)
+        //{
+        //    s.center.z = x_offset;
+        //    s.center.y = std::abs(x_offset) / 2;
+        //}
     }
 
     Image image(width, height);
@@ -150,8 +153,10 @@ static void run_window(int width, int height)
 }
 
 int main() {
-    int width = 1200;
-    int height = 1200;
+    //int width = 1920;
+    //int height = 1080;
+    int width = 1000;
+    int height = 1000;
 
 
     run_window(width, height);
