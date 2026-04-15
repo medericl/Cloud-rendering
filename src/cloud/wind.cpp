@@ -1,6 +1,5 @@
 #include "wind.hh"
 #include <GLFW/glfw3.h>
-#include <iostream>
 #include "../scene/config.hh"
 
 Wind::Wind()

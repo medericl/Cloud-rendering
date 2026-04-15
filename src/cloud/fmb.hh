@@ -1,4 +1,4 @@
 #pragma once
 #include "../vector/vector.hh"
 
-float fmb(Point3 p);
+float fbm(Point3 p);

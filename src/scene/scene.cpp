@@ -202,8 +202,10 @@ Color Scene::IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t)
 
         p = p + w.wind();
 
-        //std::cout << w.wind() << "\n";
-        float density = std::max(0.0f, DENSITY * vertical_falloff(p.y) * fmb(p));
+        float a = fbm(p);
+        a = std::pow(a, 1.8);
+
+        float density = std::max(0.0f, DENSITY * vertical_falloff(p.y) * a);
         
         accum += transmittance * density * step;
         transmittance *= std::exp(-density * step);

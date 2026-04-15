@@ -102,7 +102,6 @@ static void run_window(int width, int height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-
     Camera camera(Point3(800,800,-800), Point3(180,180,-180), Vector3(0,1,0), width, height);
 
     Scene scene(camera, vector_light(), vector_sphere(), vector_cube());

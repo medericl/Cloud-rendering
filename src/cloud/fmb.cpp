@@ -68,7 +68,26 @@ float noise(Point3 p)
     return lerp( lerp(a, b, uy), lerp(a1, a2, uy), uz);
 }
 
-float fmb(Point3 p)
+float remap_classic(float val)
+{
+    float low = 0.3f;
+    float high = 0.7f;
+    float t = (val - low) / (high - low);
+    t = std::max(0.0f, std::min(1.0f, t));
+    return t * t * (3.0f - 2.0f * t);
+}
+
+float remap_sharp(float val, float k)
+{
+    return std::pow(val, k);
+}
+
+float remap_soft(float val)
+{
+    return val * val;
+}
+
+float fbm(Point3 p)
 {
     float sum = 0;
     float amplitude = INITIAL_AMPLITUDE;
@@ -82,5 +101,6 @@ float fmb(Point3 p)
         amplitude *= 0.5;
     }
 
-    return sum;
+    return remap_classic(sum);
+    //return sum;
 }
