@@ -70,11 +70,11 @@ float noise(Point3 p)
 
 float remap_classic(float val)
 {
-    float low = 0.4f;
+    float low = 0.3f;
     float high = 0.7f;
     float t = (val - low) / (high - low);
     t = std::max(0.0f, std::min(1.0f, t));
-    return t * t * t;
+    return t * t * (3.0f - 2.0f * t);
 }
 
 float remap_sharp(float val, float k)
