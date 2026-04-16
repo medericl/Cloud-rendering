@@ -199,15 +199,13 @@ Color Scene::IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t)
     {
         float ti = tStart + i * step;
         Point3 p = (origin + ray * ti) + w.wind();
-        //p = p * 2.0f;
-        float shape = vertical_falloff(p.y) * fbm(p * 0.5f, 10);
-        //float detail = fbm(p * 0.2f, 10);
+        float shape = vertical_falloff(p.y) * fbm(p, 4);
+        float detail = fbm(p * 4.0f, 4);
         //float erosion = worley(shape);
-        //float eroded = remap(shape, detail * 0.4f, 1.0f, 0.0f, 1.2f);
-        //std::cout << shape << "\n";
+        float detail_pos = std::max(0.0f, detail) * 0.6f;
+        float eroded = remap(shape, detail_pos, 1.0f, 0.0f, 1.2f);
 
-        //float density = std::max(0.0f, DENSITY * eroded);
-        float density = std::max(0.0f, DENSITY * shape);
+        float density = std::max(0.0f, DENSITY * eroded);
         
         accum += transmittance * density * step;
         transmittance *= std::exp(-density * step);

@@ -25,7 +25,7 @@ inline Color COLOR_FLOOR(21,21,21);
 
 // bounding box du volume
 inline float BOX_MIN_X = -325.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -325.0f;
-inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 300.0f,  BOX_MAX_Z =  325.0f;
+inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 30.0f,  BOX_MAX_Z =  325.0f;
 
 // nombre de steps du raymarching volumique
 // couleur du brouillard

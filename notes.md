@@ -30,4 +30,18 @@ creer des avions
 - faire les lumieres
 -Lighting volumique (single scattering)
 -Phase function de Henyey-Greenstein
+- faire les shadows
+- Perlin noise
+
+ Curl noise pour l'animation
+
+
+
+
+
+param:
+
+p * x | x petit = forme tres grandes
+
+
 
