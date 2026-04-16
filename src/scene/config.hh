@@ -24,7 +24,7 @@ inline Color COLOR_FLOOR(21,21,21);
 
 // bounding box du volume
 inline float BOX_MIN_X = -325.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -325.0f;
-inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 250.0f,  BOX_MAX_Z =  325.0f;
+inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 30.0f,  BOX_MAX_Z =  325.0f;
 
 // couleur du brouillard
 inline Color fog_color(167, 157, 170);
@@ -33,7 +33,9 @@ inline Color fog_color(167, 157, 170);
 //inline int FOG_STEPS = 60;
 // Cloud
 inline float DENSITY = 0.02f;
-inline int FOG_STEPS = 40; // précision dans le nuage
+//inline int FOG_STEPS = 40; // précision dans le nuage
+//inline int FOG_STEPS = 10; // précision dans le nuage
+inline int FOG_STEPS = 5; // précision dans le nuage
 inline float INITIAL_AMPLITUDE = 0.4f;
 inline float INITIAL_FREQUENCY = 0.0096f; // taille nuage
 inline float FREQ_SHAPE = 0.7577f;
@@ -45,6 +47,7 @@ inline float K_DETAIL = 0.6;
 inline float CLOUD_COVERAGE = 1.5;
 inline float FALL_OFF_BOTTOM = 0.1f;
 inline float FALL_OFF_TOP = 0.6f;
+inline float K_WORLEY = 0.0073f;
 
 // Wind
 inline float WIND_SPEED = 200;

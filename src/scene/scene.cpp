@@ -4,6 +4,7 @@
 #include "../vector/vector.hh"
 #include "../cloud/volume.hh"
 #include "config.hh"
+#include "../cloud/worley.hh"
 
 #include <algorithm>
 #include <cmath>
@@ -183,7 +184,6 @@ void Scene::ray_tracing(Image& image)
             //float dist = ray_march(ray, camera.origin);
             //if (dist != 0) // touched an object
             //    pixel = shade(camera.origin, ray, dist);
-
             Color finalColor = IntegrateVolume(camera.origin, ray, pixel, 0.0f, wind);
             image.setPixel(x, y, finalColor);
         }
