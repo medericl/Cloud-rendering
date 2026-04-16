@@ -1,4 +1,4 @@
-#include "effect.hh"
+#include "fall_off.hh"
 #include "../scene/config.hh"
 #include <cmath>
 
@@ -16,7 +16,6 @@ float very_smooth_step(float a, float b, float val)
     float t5 = t4 * t;
     return (6 * t5) - (15 * t4) + (10 * t3);     // 6t⁵ - 15t⁴ + 10t³
 }
-
 
 float vertical_falloff(float py)
 {

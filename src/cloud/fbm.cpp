@@ -1,7 +1,8 @@
 #include "../scene/config.hh"
-#include "fmb.hh"
+#include "fbm.hh"
+#include "fall_off.hh"
+
 #include <cmath>
-#include <iostream>
 
 static float hash3(int x, int y, int z)
 {
@@ -32,9 +33,13 @@ float noise(Point3 p)
     float fy = p.y - iy;
     float fz = p.z - iz;
 
-    float ux = fade(fx);
-    float uy = fade(fy);
-    float uz = fade(fz);
+    //float ux = fade(fx);
+    //float uy = fade(fy);
+    //float uz = fade(fz);
+
+    float ux = smooth_step(0.0f, 1.0f, fx);
+    float uy = smooth_step(0.0f, 1.0f, fy);
+    float uz = smooth_step(0.0f, 1.0f, fz);
 
     float v000 = hash3(ix,iy,iz);
     float v100 = hash3(ix+1, iy,iz);
@@ -86,7 +91,7 @@ float fbm(Point3 p, int octave)
     float amplitude = INITIAL_AMPLITUDE;
     float frequency = INITIAL_FREQUENCY;
 
-    for (size_t i = 0; i < octave; i+=1)
+    for (int i = 0; i < octave; i+=1)
     {
         float value = noise(p * frequency);
         sum += amplitude * value;

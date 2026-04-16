@@ -14,7 +14,6 @@ inline float k_far = 1000.0f;
 // SCENE
 inline Color ambient_color(30, 30, 30);
 inline Color background_color(18, 18, 18);
-//inline Color background_color(21, 21, 35);
 
 // LIGHT
 inline Color COLOR_LIGHT1(21,230,230);
@@ -25,24 +24,18 @@ inline Color COLOR_FLOOR(21,21,21);
 
 // bounding box du volume
 inline float BOX_MIN_X = -325.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -325.0f;
-inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 30.0f,  BOX_MAX_Z =  325.0f;
+inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 250.0f,  BOX_MAX_Z =  325.0f;
+
+// couleur du brouillard
+inline Color fog_color(167, 157, 170);
 
 // nombre de steps du raymarching volumique
-// couleur du brouillard
-//inline Color fog_color(86, 75, 89);
-//inline Color fog_color(61, 68, 73);
-//inline Color fog_color(68, 54, 71);
-//inline Color fog_color(121, 93, 128);
-inline Color fog_color(113, 97, 118);
-
-inline int FOG_STEPS = 5;
+inline int FOG_STEPS = 60;
 inline float INITIAL_FREQUENCY = 0.0096f;
-inline float INITIAL_AMPLITUDE = 1.0f;
+inline float INITIAL_AMPLITUDE = 0.4f;
 
 // Cloud
-//inline float DENSITY = 0.086f;
-//inline float DENSITY = 0.5254f;
-inline float DENSITY = 0.086f;
-inline float WIND_SPEED = 100;
+inline float DENSITY = 0.02f;
+inline float WIND_SPEED = 200;
 inline Vector3 WIND_DIRECTION = Vector3(-1,0,0);
 

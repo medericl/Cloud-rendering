@@ -5,8 +5,6 @@
 Wind::Wind()
 {
     last_time = 0.0f;
-    wind_speed = WIND_SPEED;
-    wind_direction = WIND_DIRECTION;
     offset = Vector3(0.0f, 0.0f, 0.0f);
 }
 
@@ -17,7 +15,7 @@ void Wind::update()
     float elapsed = now - last_time;
     last_time = now;
     if (elapsed > 0.05f) elapsed = 0.05f;
-    offset = offset + wind_direction * wind_speed * elapsed;
+    offset = offset + WIND_DIRECTION * WIND_SPEED * elapsed;
 }
 
 Vector3 Wind::wind()

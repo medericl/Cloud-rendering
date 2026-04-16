@@ -1,7 +1,7 @@
 #ifndef CAMERA_HH
 #define CAMERA_HH
 
-#include "../cloud/plan_image.hh"
+#include "../scene/plan_image.hh"
 
 class Camera {
 public:

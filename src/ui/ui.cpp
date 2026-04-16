@@ -17,12 +17,12 @@ void render_ui(Scene& scene)
     ImGui::Begin("Cloud");
 
     if (ImGui::CollapsingHeader("Cloud", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::SliderFloat("Density",    &DENSITY,   0.0f,  0.3f,  "%.4f");
+        ImGui::SliderFloat("Density",    &DENSITY,   0.0f,  0.1f,  "%.4f");
         ImGui::SliderInt("Steps",        &FOG_STEPS, 1,     128);
         color_edit("Cloud color",          fog_color);
-        ImGui::SliderFloat("Initial frequenciy",    &INITIAL_FREQUENCY,   0.00f,  0.1f,  "%.4f");
-        ImGui::SliderFloat("Initial amplitude",    &INITIAL_AMPLITUDE,   0.00f,  10.0f,  "%.4f");
-        ImGui::SliderFloat("Wind Speed",    &WIND_SPEED,   0.0f,  30.0f,  "%.4f");
+        ImGui::SliderFloat("Initial frequenciy",    &INITIAL_FREQUENCY,   0.00f,  0.02f,  "%.4f");
+        ImGui::SliderFloat("Initial amplitude",    &INITIAL_AMPLITUDE,   0.00f,  2.0f,  "%.4f");
+        ImGui::SliderFloat("Wind Speed",    &WIND_SPEED,   0.0f,  1000.0f,  "%.4f");
     }
 
     if (ImGui::CollapsingHeader("Bounding box")) {
