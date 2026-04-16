@@ -47,7 +47,10 @@ inline float K_DETAIL = 0.6;
 inline float CLOUD_COVERAGE = 1.5;
 inline float FALL_OFF_BOTTOM = 0.1f;
 inline float FALL_OFF_TOP = 0.6f;
-inline float K_WORLEY = 0.0073f;
+//inline float FREQ_WORLEY = 0.0073f;
+inline float FREQ_WORLEY = 0.04f;
+
+inline float K_WORLEY = 0.2f;
 
 // Wind
 inline float WIND_SPEED = 200;

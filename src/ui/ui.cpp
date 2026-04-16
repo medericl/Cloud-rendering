@@ -31,7 +31,8 @@ void render_ui(Scene& scene)
         ImGui::SliderFloat("Cloud coverage",    &CLOUD_COVERAGE,   0.00f,  5.00f,  "%.4f");
         ImGui::SliderFloat("fall off bottom",    &FALL_OFF_BOTTOM,   0.00f,  1.00f,  "%.4f");
         ImGui::SliderFloat("fall off top",    &FALL_OFF_TOP,   0.00f,  1.00f,  "%.4f");
-        ImGui::SliderFloat("Worley",    &K_WORLEY,   0.0f,  0.04f,  "%.4f");
+        ImGui::SliderFloat("Worley",    &K_WORLEY,   0.0f,  0.9f,  "%.4f");
+        ImGui::SliderFloat("Worley frequency",    &FREQ_WORLEY,   0.0f,  0.04f,  "%.4f");
         ImGui::SliderFloat("Wind Speed",    &WIND_SPEED,   0.0f,  1000.0f,  "%.4f");
     }
 

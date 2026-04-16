@@ -61,12 +61,14 @@ Color IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t, Wind w)
         //float erosion = worley(shape);
 
 
-        float Worley = pow(1 - worley(p * K_WORLEY),3);
+        float Worley = pow(1 - worley(p * FREQ_WORLEY),3);
+        float wworley = std::max(0.0f, worley(p * FREQ_WORLEY));
+
         float detail_pos = std::max(0.0f, detail) * K_DETAIL;
         //detail_pos = std::max(0.0f,worley(p * K_WORLEY) * K_DETAIL);
 
-        float eroded = remap_smooth(shape, detail_pos, 1.0f, 0.0f, CLOUD_COVERAGE) - (Worley * 3.55f);
-        //float eroded = remap_smooth(shape, detail_pos, 1.0f, 0.0f, CLOUD_COVERAGE);
+        //float eroded = remap_smooth(shape, detail_pos, 1.0f, 0.0f, CLOUD_COVERAGE) - (Worley * 3.55f);
+        float eroded = remap_smooth(shape, detail_pos, 1.0f, 0.0f, CLOUD_COVERAGE) - wworley * K_WORLEY;
 
 
         float density = std::max(0.0f, DENSITY * eroded);
