@@ -25,3 +25,9 @@ Blobs / forme globale plus jolie
 faire plusieurs couches
 créer un environnement: des montagnes, forets...
 creer des avions
+
+
+- faire les lumieres
+-Lighting volumique (single scattering)
+-Phase function de Henyey-Greenstein
+

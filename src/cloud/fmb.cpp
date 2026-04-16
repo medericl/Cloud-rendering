@@ -1,22 +1,7 @@
 #include "../scene/config.hh"
 #include "fmb.hh"
 #include <cmath>
-
-float remapFBM(float val)
-{
-    float low = 0.4;
-    float high = 0.7;
-
-    float t = (val - low) / (high - low);
-
-    if (t < 0)
-        t = 0;
-    if (t > 1)
-        t = 1;
-
-    t = t * t * t;
-    return t;
-}
+#include <iostream>
 
 static float hash3(int x, int y, int z)
 {
@@ -68,6 +53,13 @@ float noise(Point3 p)
     return lerp( lerp(a, b, uy), lerp(a1, a2, uy), uz);
 }
 
+float remap(float val, float low, float high, float min, float max)
+{
+    float t = (val - low) / (high - low); // pourcentage entre low and high
+    t = std::max(0.0f, std::min(1.0f, t)); // normalise entre 0 et 1
+    return min + t * (max - min); // changer l'intervale
+}
+
 float remap_classic(float val)
 {
     float low = 0.3f;
@@ -77,8 +69,9 @@ float remap_classic(float val)
     return t * t * (3.0f - 2.0f * t);
 }
 
-float remap_sharp(float val, float k)
+float remap_sharp(float val)
 {
+    float k = 1.3f;
     return std::pow(val, k);
 }
 
@@ -87,22 +80,20 @@ float remap_soft(float val)
     return val * val;
 }
 
-float fbm(Point3 p)
+float fbm(Point3 p, int octave)
 {
     float sum = 0;
     float amplitude = INITIAL_AMPLITUDE;
     float frequency = INITIAL_FREQUENCY;
 
-    for (size_t i = 0; i < 4; i+=1)
+    for (size_t i = 0; i < octave; i+=1)
     {
         float value = noise(p * frequency);
         sum += amplitude * value;
-        frequency *= 1.8;
+        frequency *= 1.8; // 2
         amplitude *= 0.5;
     }
 
-    return remap_classic(sum);
-    //return remap_sharp(sum, 1.1);
-    //return remap_soft(sum);
-    //return sum;
+    return sum;
+    //return remap_classic(sum);
 }

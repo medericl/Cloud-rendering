@@ -17,7 +17,7 @@ void render_ui(Scene& scene)
     ImGui::Begin("Cloud");
 
     if (ImGui::CollapsingHeader("Cloud", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::SliderFloat("Density",    &DENSITY,   0.0f,  1.0f,  "%.4f");
+        ImGui::SliderFloat("Density",    &DENSITY,   0.0f,  0.3f,  "%.4f");
         ImGui::SliderInt("Steps",        &FOG_STEPS, 1,     128);
         color_edit("Cloud color",          fog_color);
         ImGui::SliderFloat("Initial frequenciy",    &INITIAL_FREQUENCY,   0.00f,  0.1f,  "%.4f");

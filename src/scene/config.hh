@@ -24,8 +24,8 @@ inline Color COLOR_LIGHT4(94,229,0);
 inline Color COLOR_FLOOR(21,21,21);
 
 // bounding box du volume
-inline float BOX_MIN_X = -325.0f, BOX_MIN_Y = 20.5f, BOX_MIN_Z = -325.0f;
-inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 130.0f,  BOX_MAX_Z =  325.0f;
+inline float BOX_MIN_X = -325.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -325.0f;
+inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 300.0f,  BOX_MAX_Z =  325.0f;
 
 // nombre de steps du raymarching volumique
 // couleur du brouillard
@@ -41,7 +41,8 @@ inline float INITIAL_AMPLITUDE = 1.0f;
 
 // Cloud
 //inline float DENSITY = 0.086f;
-inline float DENSITY = 0.5254f;
+//inline float DENSITY = 0.5254f;
+inline float DENSITY = 0.086f;
 inline float WIND_SPEED = 100;
 inline Vector3 WIND_DIRECTION = Vector3(-1,0,0);
 

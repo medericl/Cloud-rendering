@@ -198,14 +198,16 @@ Color Scene::IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t)
     for (int i = 0; i < FOG_STEPS; i++)
     {
         float ti = tStart + i * step;
-        Point3 p = origin + ray * ti;
+        Point3 p = (origin + ray * ti) + w.wind();
+        //p = p * 2.0f;
+        float shape = vertical_falloff(p.y) * fbm(p * 0.5f, 10);
+        //float detail = fbm(p * 0.2f, 10);
+        //float erosion = worley(shape);
+        //float eroded = remap(shape, detail * 0.4f, 1.0f, 0.0f, 1.2f);
+        //std::cout << shape << "\n";
 
-        p = p + w.wind();
-
-        float a = fbm(p);
-        a = std::pow(a, 1.8);
-
-        float density = std::max(0.0f, DENSITY * vertical_falloff(p.y) * a);
+        //float density = std::max(0.0f, DENSITY * eroded);
+        float density = std::max(0.0f, DENSITY * shape);
         
         accum += transmittance * density * step;
         transmittance *= std::exp(-density * step);
@@ -246,7 +248,6 @@ void Scene::ray_tracing(Image& image)
                 pixel = shade(camera.origin, ray, dist);
 
             Color finalColor = IntegrateVolume(camera.origin, ray, pixel, dist);
-
             image.setPixel(x, y, finalColor);
         }
     }
