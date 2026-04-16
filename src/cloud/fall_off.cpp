@@ -23,8 +23,8 @@ float vertical_falloff(float py)
     float h = (py - BOX_MIN_Y) / height;
     h = std::max(0.0f, std::min(1.0f, h));  // clamp [0,1]
 
-    float bottom = smooth_step(0.0f, 0.1f, h);
-    float top = smooth_step(1.0f, 0.6f, h);
+    float bottom = smooth_step(0.0f, FALL_OFF_BOTTOM, h);
+    float top = smooth_step(1.0f, FALL_OFF_TOP, h);
     return bottom * top;
 }
 

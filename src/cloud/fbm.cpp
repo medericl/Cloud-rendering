@@ -58,7 +58,7 @@ float noise(Point3 p)
     return lerp( lerp(a, b, uy), lerp(a1, a2, uy), uz);
 }
 
-float remap(float val, float low, float high, float min, float max)
+float remap_smooth(float val, float low, float high, float min, float max)
 {
     float t = (val - low) / (high - low); // pourcentage entre low and high
     t = std::max(0.0f, std::min(1.0f, t)); // normalise entre 0 et 1
@@ -95,8 +95,11 @@ float fbm(Point3 p, int octave)
     {
         float value = noise(p * frequency);
         sum += amplitude * value;
-        frequency *= 1.8; // 2
-        amplitude *= 0.5;
+        //frequency *= 1.8; // 2
+        //amplitude *= 0.5;
+        frequency *= LACUNARITY;
+        amplitude *= GAIN;
+
     }
 
     return sum;

@@ -22,6 +22,15 @@ void render_ui(Scene& scene)
         color_edit("Cloud color",          fog_color);
         ImGui::SliderFloat("Initial frequenciy",    &INITIAL_FREQUENCY,   0.00f,  0.02f,  "%.4f");
         ImGui::SliderFloat("Initial amplitude",    &INITIAL_AMPLITUDE,   0.00f,  2.0f,  "%.4f");
+        ImGui::SliderFloat("Shape frequenciy",    &FREQ_SHAPE,   0.00f,  5.0f,  "%.4f");
+        ImGui::SliderFloat("Detail frequenciy",    &FREQ_DETAIL,   0.00f,  10.00f,  "%.4f");
+        ImGui::SliderFloat("Lacunarity",    &LACUNARITY,   0.00f,  5.00f,  "%.4f");
+        ImGui::SliderFloat("Gain",    &GAIN,   0.00f,  1.00f,  "%.4f");
+        ImGui::SliderInt("Octave",    &OCTAVE,   0,  15);
+        ImGui::SliderFloat("K Detail",    &K_DETAIL,   0.00f,  2.00f,  "%.4f");
+        ImGui::SliderFloat("Cloud coverage",    &CLOUD_COVERAGE,   0.00f,  5.00f,  "%.4f");
+        ImGui::SliderFloat("fall off bottom",    &FALL_OFF_BOTTOM,   0.00f,  1.00f,  "%.4f");
+        ImGui::SliderFloat("fall off top",    &FALL_OFF_TOP,   0.00f,  1.00f,  "%.4f");
         ImGui::SliderFloat("Wind Speed",    &WIND_SPEED,   0.0f,  1000.0f,  "%.4f");
     }
 

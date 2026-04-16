@@ -52,13 +52,14 @@ Color IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t, Wind w)
     {
         float ti = tStart + i * step;
         Point3 p = (origin + ray * ti) + w.wind();
-        float shape = vertical_falloff(p.y) * fbm(p, 4);
-        float detail = fbm(p * 4.0f, 4);
+        float shape = vertical_falloff(p.y) * fbm(p * FREQ_SHAPE, OCTAVE);
+        float detail = fbm(p * FREQ_DETAIL, OCTAVE);
         //float erosion = worley(shape);
 
-        float detail_pos = std::max(0.0f, detail) * 0.6f;
+        float detail_pos = std::max(0.0f, detail) * K_DETAIL;
 
-        float eroded = remap(shape, detail_pos, 1.0f, 0.0f, 1.2f);
+        float eroded = remap_smooth(shape, detail_pos, 1.0f, 0.0f, CLOUD_COVERAGE);
+        //float eroded = shape - detail_pos;
 
         float density = std::max(0.0f, DENSITY * eroded);
         
