@@ -8,7 +8,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 
 
 bool intersect_box(const Point3& origin, const Vector3& ray, const Point3& box_min, const Point3& box_max, float& tEnter, float& tExit)
@@ -27,6 +26,64 @@ bool intersect_box(const Point3& origin, const Vector3& ray, const Point3& box_m
 
     return tExit > std::max(tEnter, 0.0f);
 }
+
+float cloud_density(Point3 p, Wind w)
+{
+    p = p + w.wind();
+    float shape = vertical_falloff(p.y) * fbm(p * FREQ_SHAPE, OCTAVE);
+    float detail = fbm(p * FREQ_DETAIL, OCTAVE);
+    //float Worley = pow(1 - worley(p * FREQ_WORLEY),3);
+    float wworley = std::max(0.0f, worley(p * FREQ_WORLEY));
+
+    float detail_pos = std::max(0.0f, detail) * K_DETAIL;
+
+    //float eroded = remap_smooth(shape, detail_pos, 1.0f, 0.0f, CLOUD_COVERAGE) - (Worley * 3.55f);
+    float eroded = remap_smooth(shape, detail_pos, 1.0f, 0.0f, CLOUD_COVERAGE) - wworley * K_WORLEY; // nuage rond
+
+    return std::max(0.0f, DENSITY * eroded);
+}
+
+float hg_phase(Vector3 ray, Vector3 p)
+{
+    Vector3 lightDir = (SUN_POS - p) / (SUN_POS - p).norm();
+    Vector3 viewDir = ray * -1;
+
+    float cosTheta = lightDir.dot(viewDir);
+    cosTheta = std::max(-1.0f, std::min(1.0f, cosTheta));
+    float g2 = G_HG * G_HG;
+    return (1.0f - g2) / std::pow(1.0f + g2 - 2.0f * G_HG * cosTheta, 1.5f);
+}
+
+float beer_powder(float lightDepth)
+{
+    //float beer = exp(-lightDepth); 
+    //float powder = 0.5f + 0.5f * (1.0f - exp(-lightDepth * POWDER_STRENGTH));
+    //float beerPowder = beer * powder;
+    float beer = exp(-lightDepth);
+    float powder = 1.0f - exp(-lightDepth * POWDER_STRENGTH);
+    float beerPowder = beer * (1.0f + powder * POWDER_AMOUNT);
+    return beerPowder;
+}
+
+float sun_density(Point3 p, Wind w)
+{
+    Vector3 sun_ray = SUN_POS - p;
+    float sun_distance = sun_ray.norm();
+    if (sun_distance <= 0.0f)
+        return 0.0f;
+
+    sun_ray = sun_ray / sun_distance;
+
+    float res = 0.0f;
+    float step = sun_distance / SUN_STEPS;
+    for (int i = 0; i < SUN_STEPS; i++)
+    {
+        Point3 sample = p + sun_ray * (i * step);
+        res += cloud_density(sample, w) * step;
+    }
+    return std::max(0.0f, res);
+}
+
 
 Color IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t, Wind w)
 {
@@ -53,27 +110,14 @@ Color IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t, Wind w)
     for (int i = 0; i < FOG_STEPS; i++)
     {
         float ti = tStart + i * step;
-        Point3 p = (origin + ray * ti) + w.wind();
+        Point3 p = (origin + ray * ti);
 
-        float shape = vertical_falloff(p.y) * fbm(p * FREQ_SHAPE, OCTAVE);
-        //float detail = fbm(p * FREQ_DETAIL, OCTAVE) * (1 - worley(p * K_WORLEY));
-        float detail = fbm(p * FREQ_DETAIL, OCTAVE);
-        //float erosion = worley(shape);
+        float density = cloud_density(p, w);
+        float lightDepth = sun_density(p,w);
+        float sun_transmittance = beer_powder(lightDepth); // cmb les nuage bloque la lumiere
+        float hg = hg_phase(ray, p);
 
-
-        float Worley = pow(1 - worley(p * FREQ_WORLEY),3);
-        float wworley = std::max(0.0f, worley(p * FREQ_WORLEY));
-
-        float detail_pos = std::max(0.0f, detail) * K_DETAIL;
-        //detail_pos = std::max(0.0f,worley(p * K_WORLEY) * K_DETAIL);
-
-        //float eroded = remap_smooth(shape, detail_pos, 1.0f, 0.0f, CLOUD_COVERAGE) - (Worley * 3.55f);
-        float eroded = remap_smooth(shape, detail_pos, 1.0f, 0.0f, CLOUD_COVERAGE) - wworley * K_WORLEY;
-
-
-        float density = std::max(0.0f, DENSITY * eroded);
-        
-        accum += transmittance * density * step;
+        accum += transmittance * sun_transmittance * density * step;
         transmittance *= std::exp(-density * step);
         if (transmittance <= 0.001f)
             break;

@@ -28,8 +28,8 @@ creer des avions
 
 
 - faire les lumieres
--Lighting volumique (single scattering)
--Phase function de Henyey-Greenstein
+- Lighting volumique (single scattering)
+- Phase function de Henyey-Greenstein
 - faire les shadows
 - Perlin noise
 
@@ -45,4 +45,10 @@ p * x | x petit = forme tres grandes
 
 
 
+- faire un truc comme blender -> modifier les param, puis cliquer sur télécharger pour avoir
+la vidéo du nuage.
 
+- faire les nuages lisses
+
+- faire montagnes
+essayer de présenter un autre algo que perlin et worley

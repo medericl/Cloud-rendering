@@ -4,10 +4,15 @@
 int main() {
     //int width = 1920;
     //int height = 1080;
-    int width = 1000;
-    int height = 1000;
+    //int width = 1000;
+    //int height = 1000;
 
-    Camera camera(Point3(800,500,-800), Point3(180,180,-180), Vector3(0,1,0), width, height);
+    int width = 300;
+    int height = 300;
+    //Camera camera(Point3(800,500,-800), Point3(180,180,-180), Vector3(0,1,0), width, height);
+    Camera camera(Point3(800,500,-800), Point3(661,426,-661), Vector3(0,1,0), width, height);
+
+    //Camera camera(Point3(800,500,-800), Point3(570,385,-570), Vector3(0,1,0), width, height, true);
     run_window(width, height, camera);
     return 0;
 }

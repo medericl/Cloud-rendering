@@ -12,9 +12,81 @@ static void color_edit(const char* label, Color& c)
     }
 }
 
+static void translate_camera(Scene& scene, const Vector3& delta)
+{
+    scene.camera.origin = scene.camera.origin + delta;
+    scene.camera.p = scene.camera.p + delta;
+    scene.camera.plan_image.p_right_up = scene.camera.plan_image.p_right_up + delta;
+    scene.camera.plan_image.p_left_up = scene.camera.plan_image.p_left_up + delta;
+    scene.camera.plan_image.p_right_down = scene.camera.plan_image.p_right_down + delta;
+    scene.camera.plan_image.p_left_down = scene.camera.plan_image.p_left_down + delta;
+}
+
+static void rebuild_camera_plan(Scene& scene)
+{
+    scene.camera.plan_image = Plan_image(
+        scene.camera.p,
+        scene.camera.p - scene.camera.origin,
+        scene.camera.direction_up,
+        scene.camera.plan_image.p_image_width,
+        scene.camera.plan_image.p_image_height);
+}
+
+static void update_camera_keyboard(Scene& scene)
+{
+    static float camera_speed = 300.0f;
+    static float target_speed = 300.0f;
+
+    Vector3 forward = scene.camera.p - scene.camera.origin;
+    forward = forward / forward.norm();
+
+    Vector3 right = scene.camera.direction_up.p_v(forward);
+    right = right / right.norm();
+
+    Vector3 movement(0, 0, 0);
+    if (ImGui::IsKeyDown(ImGuiKey_W))
+        movement = movement + forward;
+    if (ImGui::IsKeyDown(ImGuiKey_S))
+        movement = movement - forward;
+    if (ImGui::IsKeyDown(ImGuiKey_A))
+        movement = movement - right;
+    if (ImGui::IsKeyDown(ImGuiKey_D))
+        movement = movement + right;
+
+    if (movement.norm() > 0.0f) {
+        movement = movement / movement.norm();
+        translate_camera(scene, movement * camera_speed * ImGui::GetIO().DeltaTime);
+    }
+
+    Vector3 target_movement(0, 0, 0);
+    if (ImGui::IsKeyDown(ImGuiKey_UpArrow))
+        target_movement = target_movement + forward;
+    if (ImGui::IsKeyDown(ImGuiKey_DownArrow))
+        target_movement = target_movement - forward;
+    if (ImGui::IsKeyDown(ImGuiKey_LeftArrow))
+        target_movement = target_movement - right;
+    if (ImGui::IsKeyDown(ImGuiKey_RightArrow))
+        target_movement = target_movement + right;
+
+    if (target_movement.norm() > 0.0f) {
+        target_movement = target_movement / target_movement.norm();
+        scene.camera.p = scene.camera.p + target_movement * target_speed * ImGui::GetIO().DeltaTime;
+        rebuild_camera_plan(scene);
+    }
+
+    if (ImGui::CollapsingHeader("Camera")) {
+        ImGui::SliderFloat("Camera speed", &camera_speed, 10.0f, 2000.0f);
+        ImGui::SliderFloat("Target speed", &target_speed, 10.0f, 2000.0f);
+        ImGui::Text("Position: %.1f %.1f %.1f", scene.camera.origin.x, scene.camera.origin.y, scene.camera.origin.z);
+        ImGui::Text("Target: %.1f %.1f %.1f", scene.camera.p.x, scene.camera.p.y, scene.camera.p.z);
+    }
+}
+
 void render_ui(Scene& scene)
 {
     ImGui::Begin("Cloud");
+
+    update_camera_keyboard(scene);
 
     if (ImGui::CollapsingHeader("Cloud", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Density",    &DENSITY,   0.0f,  0.1f,  "%.4f");
@@ -46,6 +118,13 @@ void render_ui(Scene& scene)
     }
 
     if (ImGui::CollapsingHeader("Lights")) {
+        ImGui::SliderFloat("Sun X", &SUN_POS.x, -1000.0f, 1000.0f);
+        ImGui::SliderFloat("Sun Y", &SUN_POS.y, -100.0f, 1000.0f);
+        ImGui::SliderFloat("Sun Z", &SUN_POS.z, -1000.0f, 1000.0f);
+        ImGui::SliderFloat("G HG", &G_HG, -0.99f, 0.99f, "%.3f");
+        ImGui::SliderFloat("Powder strength", &POWDER_STRENGTH, 0.0f, 10.0f, "%.3f");
+        ImGui::SliderFloat("Powder amount", &POWDER_AMOUNT, 0.0f, 5.0f, "%.3f");
+
         for (size_t i = 0; i < scene.list_light.size(); i++) {
             char label[32];
             snprintf(label, sizeof(label), "Light %zu", i + 1);
@@ -66,6 +145,12 @@ void render_ui(Scene& scene)
         color_edit("Ambient",    ambient_color);
         color_edit("Background", background_color);
         color_edit("Floor",      COLOR_FLOOR);
+        color_edit("Sun",        SUN);
+    }
+
+    if (!scene.list_light.empty()) {
+        scene.list_light[0].origin = SUN_POS;
+        scene.list_light[0].color = SUN;
     }
 
     ImGui::Text("Spheres: %zu", scene.list_sphere.size());

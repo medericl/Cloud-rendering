@@ -4,7 +4,6 @@
 #include "../vector/vector.hh"
 #include "../cloud/volume.hh"
 #include "config.hh"
-#include "../cloud/worley.hh"
 
 #include <algorithm>
 #include <cmath>
@@ -163,9 +162,8 @@ void Scene::ray_tracing(Image& image)
     // trouve les vecteurs qui partent de l'origine
     Plan_image p_i = camera.plan_image;
 
-    int height = p_i.p_image_height;
-    int width = p_i.p_image_width;
-    std::vector<Color> canvas(height * width);
+    int height = image.height;
+    int width = image.width;
 
     Point3 left = p_i.p_left_up;
     Point3 right = p_i.p_right_up;

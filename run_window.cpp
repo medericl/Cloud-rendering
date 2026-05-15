@@ -34,7 +34,7 @@ void run_window(int width, int height, Camera cam)
     if (!glfwInit())
         return;
 
-    GLFWwindow* window = glfwCreateWindow(width, height, "Raymarching", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(width * 3, height * 3, "Raymarching", nullptr, nullptr);
     if (!window) { glfwTerminate(); return; }
     glfwMakeContextCurrent(window);
 

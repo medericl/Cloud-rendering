@@ -13,7 +13,8 @@ inline float k_far = 1000.0f;
 
 // SCENE
 inline Color ambient_color(30, 30, 30);
-inline Color background_color(18, 18, 18);
+//inline Color background_color(78, 120, 238);
+inline Color background_color(67, 137, 210);
 
 // LIGHT
 inline Color COLOR_LIGHT1(21,230,230);
@@ -21,21 +22,24 @@ inline Color COLOR_LIGHT2(0,255,202);
 inline Color COLOR_LIGHT3(255,0,233);
 inline Color COLOR_LIGHT4(94,229,0);
 inline Color COLOR_FLOOR(21,21,21);
+inline Color SUN(100,100,100);
 
 // bounding box du volume
 inline float BOX_MIN_X = -325.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -325.0f;
-inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 30.0f,  BOX_MAX_Z =  325.0f;
+inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 230.0f,  BOX_MAX_Z =  325.0f;
+inline Point3 SUN_POS((BOX_MIN_X + BOX_MAX_X) * 0.5f, BOX_MAX_Y + 120.0f, (BOX_MIN_Z + BOX_MAX_Z) * 0.5f);
 
 // couleur du brouillard
-inline Color fog_color(167, 157, 170);
+//inline Color fog_color(167, 157, 170);
+inline Color fog_color(200, 200, 200);
 
 // nombre de steps du raymarching volumique
 //inline int FOG_STEPS = 60;
 // Cloud
 inline float DENSITY = 0.02f;
-//inline int FOG_STEPS = 40; // précision dans le nuage
-//inline int FOG_STEPS = 10; // précision dans le nuage
-inline int FOG_STEPS = 5; // précision dans le nuage
+inline int FOG_STEPS = 40; // précision dans le nuage
+//inline int FOG_STEPS = 50; // précision dans le nuage
+inline int SUN_STEPS = 5;
 inline float INITIAL_AMPLITUDE = 0.4f;
 inline float INITIAL_FREQUENCY = 0.0096f; // taille nuage
 inline float FREQ_SHAPE = 0.7577f;
@@ -49,10 +53,11 @@ inline float FALL_OFF_BOTTOM = 0.1f;
 inline float FALL_OFF_TOP = 0.6f;
 //inline float FREQ_WORLEY = 0.0073f;
 inline float FREQ_WORLEY = 0.04f;
-
 inline float K_WORLEY = 0.2f;
+inline float G_HG=0.5f;
+inline float POWDER_STRENGTH = 6.0f;
+inline float POWDER_AMOUNT = 1.0f;
 
 // Wind
 inline float WIND_SPEED = 200;
 inline Vector3 WIND_DIRECTION = Vector3(-1,0,0);
-

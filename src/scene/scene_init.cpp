@@ -31,15 +31,17 @@ std::vector<Cube> vector_cube()
 std::vector<Light> vector_light()
 {
     std::vector<Light> lights = {
-        Light(Point3(-400,600,400), COLOR_LIGHT1),
-        Light(Point3(400,600,-400), COLOR_LIGHT2),
+        Light(SUN_POS, SUN),
 
-        Light(Point3(400,600,400), COLOR_LIGHT3),
-        Light(Point3(-400,600,-400), COLOR_LIGHT4),
+        //Light(Point3(-400,600,400), COLOR_LIGHT1),
+        //Light(Point3(400,600,-400), COLOR_LIGHT2),
+
+        //Light(Point3(400,600,400), COLOR_LIGHT3),
+        //Light(Point3(-400,600,-400), COLOR_LIGHT4),
 
 
-        Light(Point3(400,-60,400), Color(20,20,20)),
-        Light(Point3(-400,-60,-400), Color(20,20,20)),
+        //Light(Point3(400,-60,400), Color(20,20,20)),
+        //Light(Point3(-400,-60,-400), Color(20,20,20)),
     };
     return lights;
 }
