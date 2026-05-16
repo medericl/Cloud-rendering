@@ -84,77 +84,6 @@ Vector3 Scene::normal(Point3 P) {
     return grad / grad.norm();
 }
 
-//Color Scene::find_color(Point3 inter_point)
-//{
-//    // Check if we hit a cube (box)
-//    //float cube_dist = floor;
-//    //for (auto& c : list_cube)
-//    //    cube_dist = std::min(cube_dist, c.sdf(inter_point));
-//
-//    float sphere_dist = HUGE_VAL;
-//    for (auto& s : list_sphere)
-//        sphere_dist = std::min(sphere_dist, (inter_point - s.center).norm() - s.radius);
-//
-//    if (cube_dist < sphere_dist + 0.1f)
-//        return COLOR_FLOOR;
-//
-//    float total_weight = 0.0f;
-//    Color result(0, 0, 0);
-//
-//    for (auto& sphere : list_sphere) {
-//        float dist = (inter_point - sphere.center).norm();
-//        float weight = 1.0f / (dist * dist);
-//        result = result + sphere.color * weight;
-//        total_weight += weight;
-//    }
-//
-//    return result * (1.0f / total_weight);
-//}
-
-
-//Color Scene::shade(Point3 origin, Vector3 ray, float t)
-//{
-//    Point3 P = origin + ray * t; // intersection point
-//    Vector3 N = normal(P);
-//    Vector3 R = (P - origin) / (P - origin).norm(); // ray
-//    Vector3 S = R - N * (R.dot(N)) * 2; // rayon réfléchi
-//    Color res;
-//    for (auto& light : list_light)
-//    {
-//        Vector3 L = (light.origin - P) / (light.origin - P).norm(); // source lumineuse
-//        Color color_object = find_color(P);
-//
-//        Color diffuse = color_object * std::max(0.0f, L.dot(N)) * 0.4;
-//        Color specular = light.color * std::pow(std::max(0.0f, S.dot(L)), ns) * ks;
-//        // Color reflected = ray_march(S, P, n - 1) * kr;
-//        res = res + diffuse + specular;
-//    }
-//
-//    return res + ambient_color;
-//}
-
-//float Scene::ray_march(Vector3 ray, Point3 origin)
-//{
-//    size_t ray_iteration = 90;
-//    float t = 0;
-//    for (size_t i = 0; i < ray_iteration; i += 1) {
-//        Point3 p = origin + ray * t;
-//
-//        float d = sdf_smooth(p);
-//        if (d < k_close) {
-//            return t;
-//        }
-//
-//        if (d > k_far) {
-//            return 0;
-//        }
-//
-//        t += d;
-//    }
-//
-//    return 0;
-//}
-
 void Scene::ray_tracing(Image& image)
 {
     wind.update();
@@ -179,9 +108,6 @@ void Scene::ray_tracing(Image& image)
             Vector3 ray = (point - camera.origin) / (point - camera.origin).norm();
             Color pixel = background_color;
 
-            //float dist = ray_march(ray, camera.origin);
-            //if (dist != 0) // touched an object
-            //    pixel = shade(camera.origin, ray, dist);
             Color finalColor = IntegrateVolume(camera.origin, ray, pixel, 0.0f, wind);
             image.setPixel(x, y, finalColor);
         }

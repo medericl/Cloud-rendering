@@ -88,6 +88,14 @@ void render_ui(Scene& scene)
 
     update_camera_keyboard(scene);
 
+    if (ImGui::CollapsingHeader("Modes", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::Checkbox("Debug", &debug);
+        ImGui::Checkbox("Big cloud zone", &big);
+        ImGui::Checkbox("Cloud POV", &pov);
+    }
+
+    update_render_modes(scene);
+
     if (ImGui::CollapsingHeader("Cloud", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Density",    &DENSITY,   0.0f,  0.1f,  "%.4f");
         ImGui::SliderInt("Steps",        &FOG_STEPS, 1,     128);

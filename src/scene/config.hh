@@ -27,18 +27,17 @@ inline Color SUN(100,100,100);
 // bounding box du volume
 inline float BOX_MIN_X = -325.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -325.0f;
 inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 230.0f,  BOX_MAX_Z =  325.0f;
-inline Point3 SUN_POS((BOX_MIN_X + BOX_MAX_X) * 0.5f, BOX_MAX_Y + 120.0f, (BOX_MIN_Z + BOX_MAX_Z) * 0.5f);
+inline Point3 SUN_POS((BOX_MIN_X + BOX_MAX_X) * 0.5f, BOX_MAX_Y + 500.0f, (BOX_MIN_Z + BOX_MAX_Z) * 0.5f);
+
 
 // couleur du brouillard
 //inline Color fog_color(167, 157, 170);
 inline Color fog_color(200, 200, 200);
 
 // nombre de steps du raymarching volumique
-//inline int FOG_STEPS = 60;
 // Cloud
 inline float DENSITY = 0.02f;
 inline int FOG_STEPS = 40; // précision dans le nuage
-//inline int FOG_STEPS = 50; // précision dans le nuage
 inline int SUN_STEPS = 5;
 inline float INITIAL_AMPLITUDE = 0.4f;
 inline float INITIAL_FREQUENCY = 0.0096f; // taille nuage
@@ -61,3 +60,20 @@ inline float POWDER_AMOUNT = 1.0f;
 // Wind
 inline float WIND_SPEED = 200;
 inline Vector3 WIND_DIRECTION = Vector3(-1,0,0);
+
+// setup
+
+inline bool debug = false; // -> inline int FOG_STEPS = 5; // précision dans le nuage
+
+inline bool big = false;
+// -> inline float BOX_MIN_X = -500.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -500.0f;
+// -> inline float BOX_MAX_X =  500.0f, BOX_MAX_Y = 350.0f,  BOX_MAX_Z = 500.0f;
+
+inline bool pov = false;
+
+class Scene;
+
+void apply_debug_mode();
+void apply_big_mode();
+void apply_pov_mode(Scene& scene);
+void update_render_modes(Scene& scene);

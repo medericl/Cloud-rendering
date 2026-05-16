@@ -56,26 +56,35 @@ float hg_phase(Vector3 ray, Vector3 p)
 
 float beer_powder(float lightDepth)
 {
-    //float beer = exp(-lightDepth); 
-    //float powder = 0.5f + 0.5f * (1.0f - exp(-lightDepth * POWDER_STRENGTH));
-    //float beerPowder = beer * powder;
-    float beer = exp(-lightDepth);
-    float powder = 1.0f - exp(-lightDepth * POWDER_STRENGTH);
-    float beerPowder = beer * (1.0f + powder * POWDER_AMOUNT);
-    return beerPowder;
+    float beer = std::exp(-lightDepth);
+    float powder = 0.5f + 0.5f * (1.0f - std::exp(-lightDepth * POWDER_STRENGTH));
+    float amount = std::max(0.0f, std::min(1.0f, POWDER_AMOUNT));
+    float beerPowder = beer * ((1.0f - amount) + amount * powder);
+    //float beerPowder = beer * (1.0f + powder * POWDER_AMOUNT);
+    return std::max(0.0f, std::min(1.0f, beerPowder));
 }
 
 float sun_density(Point3 p, Wind w)
 {
     Vector3 sun_ray = SUN_POS - p;
     float sun_distance = sun_ray.norm();
-    if (sun_distance <= 0.0f)
+    if (sun_distance <= 0.0f || SUN_STEPS <= 0)
         return 0.0f;
 
     sun_ray = sun_ray / sun_distance;
 
+    Point3 boxMin(BOX_MIN_X, BOX_MIN_Y, BOX_MIN_Z);
+    Point3 boxMax(BOX_MAX_X, BOX_MAX_Y, BOX_MAX_Z);
+    float tEnter, tExit;
+    if (!intersect_box(p, sun_ray, boxMin, boxMax, tEnter, tExit))
+        return 0.0f;
+
+    float sun_exit_distance = std::max(0.0f, tExit);
+    if (sun_exit_distance <= 0.0f)
+        return 0.0f;
+
     float res = 0.0f;
-    float step = sun_distance / SUN_STEPS;
+    float step = sun_exit_distance / SUN_STEPS;
     for (int i = 0; i < SUN_STEPS; i++)
     {
         Point3 sample = p + sun_ray * (i * step);
@@ -113,10 +122,15 @@ Color IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t, Wind w)
         Point3 p = (origin + ray * ti);
 
         float density = cloud_density(p, w);
+        if (density < 0) {
+            continue;;
+        }
+
         float lightDepth = sun_density(p,w);
         float sun_transmittance = beer_powder(lightDepth); // cmb les nuage bloque la lumiere
         float hg = hg_phase(ray, p);
 
+        //accum += transmittance * sun_transmittance * density * step * hg;
         accum += transmittance * sun_transmittance * density * step;
         transmittance *= std::exp(-density * step);
         if (transmittance <= 0.001f)

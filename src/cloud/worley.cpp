@@ -1,6 +1,5 @@
 #include "worley.hh"
 #include <cmath>
-#include <iostream>
 #include "../vector/vector.hh"
 
 static float hash_float(int n)
@@ -24,8 +23,6 @@ static Point3 hash3(int x, int y, int z)
 
 float worley(Point3 p)
 {
-    float h = 0;
-    //float point_feature = hash3(p.x, p.y, p.z);
     float min = HUGE_VAL;
     for (int i = -1; i < 2; i += 1)
     {
@@ -44,6 +41,5 @@ float worley(Point3 p)
     }
     }
 
-    //std::cout << min << "\n";
     return min;
 }
