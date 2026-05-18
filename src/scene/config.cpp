@@ -13,7 +13,6 @@ static float saved_box_min_z = BOX_MIN_Z;
 static float saved_box_max_x = BOX_MAX_X;
 static float saved_box_max_y = BOX_MAX_Y;
 static float saved_box_max_z = BOX_MAX_Z;
-static Point3 saved_sun_pos = SUN_POS;
 static Point3 saved_camera_origin;
 static Point3 saved_camera_target;
 static Vector3 saved_camera_up;
@@ -38,19 +37,12 @@ void apply_big_mode()
 
 void apply_pov_mode(Scene& scene)
 {
-    float center_x = (BOX_MIN_X + BOX_MAX_X) * 0.5f;
-    float center_z = (BOX_MIN_Z + BOX_MAX_Z) * 0.5f;
     float width = scene.camera.plan_image.p_image_width;
     float height = scene.camera.plan_image.p_image_height;
 
-    scene.camera.origin = Point3(center_x, BOX_MIN_Y - 80.0f, center_z - 160.0f);
-    scene.camera.p = Point3(center_x, BOX_MIN_Y + 120.0f, center_z);
-    scene.camera.direction_up = Vector3(0.0f, 0.0f, 1.0f);
-    scene.camera.plan_image = Plan_image(scene.camera.p,
-                                         scene.camera.p - scene.camera.origin,
-                                         scene.camera.direction_up,
-                                         width,
-                                         height);
+    scene.camera.origin = Point3(1650.0f, -1050.0f, -1650.0f);
+    scene.camera.p = Point3(1215.0f, -770.0f, -1227.0f);
+    scene.camera.plan_image = Plan_image(scene.camera.p, scene.camera.p - scene.camera.origin, scene.camera.direction_up, width, height);
 }
 
 void update_render_modes(Scene& scene)
@@ -70,7 +62,6 @@ void update_render_modes(Scene& scene)
         saved_box_max_x = BOX_MAX_X;
         saved_box_max_y = BOX_MAX_Y;
         saved_box_max_z = BOX_MAX_Z;
-        saved_sun_pos = SUN_POS;
     }
 
     if (!big && big_was_enabled) {
@@ -80,7 +71,6 @@ void update_render_modes(Scene& scene)
         BOX_MAX_X = saved_box_max_x;
         BOX_MAX_Y = saved_box_max_y;
         BOX_MAX_Z = saved_box_max_z;
-        SUN_POS = saved_sun_pos;
     }
 
     if (big)
@@ -91,6 +81,7 @@ void update_render_modes(Scene& scene)
         saved_camera_origin = scene.camera.origin;
         saved_camera_target = scene.camera.p;
         saved_camera_up = scene.camera.direction_up;
+        apply_pov_mode(scene);
     }
 
     if (!pov && pov_was_enabled) {
@@ -107,7 +98,5 @@ void update_render_modes(Scene& scene)
                                              height);
     }
 
-    if (pov)
-        apply_pov_mode(scene);
     pov_was_enabled = pov;
 }

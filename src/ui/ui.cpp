@@ -15,6 +15,7 @@ static void color_edit(const char* label, Color& c)
 static void translate_camera(Scene& scene, const Vector3& delta)
 {
     scene.camera.origin = scene.camera.origin + delta;
+    scene.camera.p = scene.camera.p + delta;
 }
 
 static void rebuild_camera_plan(Scene& scene)
@@ -41,7 +42,7 @@ static void update_camera_keyboard(Scene& scene)
     up = up / up.norm();
 
     Vector3 movement(0, 0, 0);
-    if (ImGui::IsKeyDown(ImGuiKey_W))
+    if (ImGui::IsKeyDown(ImGuiKey_W) || ImGui::IsKeyDown(ImGuiKey_Z))
         movement = movement + forward;
     if (ImGui::IsKeyDown(ImGuiKey_S))
         movement = movement - forward;
@@ -84,8 +85,6 @@ void render_ui(Scene& scene)
 {
     ImGui::Begin("Cloud");
 
-    update_camera_keyboard(scene);
-
     if (ImGui::CollapsingHeader("Modes", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::Checkbox("Debug", &debug);
         ImGui::Checkbox("Big cloud zone", &big);
@@ -105,6 +104,7 @@ void render_ui(Scene& scene)
 
 
     update_render_modes(scene);
+    update_camera_keyboard(scene);
 
     if (ImGui::CollapsingHeader("Cloud", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::SliderFloat("Density",    &DENSITY,   0.0f,  0.1f,  "%.4f");
@@ -137,7 +137,7 @@ void render_ui(Scene& scene)
 
     if (ImGui::CollapsingHeader("Lights")) {
         ImGui::SliderFloat("Sun X", &SUN_POS.x, -1000.0f, 1000.0f);
-        ImGui::SliderFloat("Sun Y", &SUN_POS.y, -100.0f, 1000.0f);
+        ImGui::SliderFloat("Sun Y", &SUN_POS.y, -100.0f, 4000.0f);
         ImGui::SliderFloat("Sun Z", &SUN_POS.z, -1000.0f, 1000.0f);
         ImGui::SliderFloat("G HG", &G_HG, -0.99f, 0.99f, "%.3f");
         ImGui::SliderFloat("Powder strength", &POWDER_STRENGTH, 0.0f, 10.0f, "%.3f");

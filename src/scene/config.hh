@@ -25,11 +25,11 @@ inline Color COLOR_LIGHT3(255,0,233);
 inline Color COLOR_LIGHT4(94,229,0);
 inline Color COLOR_FLOOR(21,21,21);
 inline Color SUN(255, 235, 200);
+inline Point3 SUN_POS(500.0f, 2000.0f, 500.0f);
 
 // bounding box du volume
 inline float BOX_MIN_X = -325.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -325.0f;
 inline float BOX_MAX_X =  325.0f, BOX_MAX_Y = 230.0f,  BOX_MAX_Z =  325.0f;
-inline Point3 SUN_POS((BOX_MIN_X + BOX_MAX_X) * 0.5f, BOX_MAX_Y + 500.0f, (BOX_MIN_Z + BOX_MAX_Z) * 0.5f);
 
 
 // couleur du brouillard
@@ -60,7 +60,6 @@ inline float POWDER_STRENGTH = 6.0f;
 inline float POWDER_AMOUNT = 1.0f;
 inline float AMBIENT_CLOUD_COLOR = 0.2f; // pas dans ui
 
-
 // Wind
 inline float WIND_SPEED = 200;
 inline Vector3 WIND_DIRECTION = Vector3(-1,0,0);
@@ -78,7 +77,6 @@ inline bool AMBIENT_CLOUD = true;
 inline bool COVERAGE = false;
 inline int COVERAGE_OCT = 2;
 inline float COVERAGE_FREQ = 0.0015f;
-
 
 class Scene;
 void apply_debug_mode();
