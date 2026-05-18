@@ -29,7 +29,7 @@ void apply_big_mode()
     BOX_MIN_Y = 0.0f;
     BOX_MIN_Z = -500.0f;
     BOX_MAX_X = 500.0f;
-    BOX_MAX_Y = 350.0f;
+    BOX_MAX_Y = 200.0f;
     BOX_MAX_Z = 500.0f;
     SUN_POS = Point3((BOX_MIN_X + BOX_MAX_X) * 0.5f,
                      BOX_MAX_Y + 200.0f,

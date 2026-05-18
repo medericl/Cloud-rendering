@@ -9,6 +9,12 @@
 #include <cmath>
 #include <vector>
 
+static Color sky_color(const Vector3& ray)
+{
+    float t = std::max(0.0f, std::min(1.0f, ray.y * 0.5f + 0.5f));
+    return SKY_HORIZON * (1.0f - t) + SKY_ZENITH * t;
+}
+
 Scene::Scene(Camera Camera, std::vector<Light> List_light, std::vector<Sphere> List_sphere,
              std::vector<Cube> List_cube)
 : camera(Camera), list_light(List_light), list_sphere(List_sphere), floor(Cube(Point3(0, 0, 0), Vector3(400, 12, 400), Color(30, 30, 30)))
@@ -106,7 +112,7 @@ void Scene::ray_tracing(Image& image)
             double t_x = x / (double)(width - 1);
             Point3 point = left_row + (right_row - left_row) * t_x;
             Vector3 ray = (point - camera.origin) / (point - camera.origin).norm();
-            Color pixel = background_color;
+            Color pixel = sky_color(ray);
 
             Color finalColor = IntegrateVolume(camera.origin, ray, pixel, 0.0f, wind);
             image.setPixel(x, y, finalColor);

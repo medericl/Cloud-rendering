@@ -15,6 +15,8 @@ inline float k_far = 1000.0f;
 inline Color ambient_color(30, 30, 30);
 //inline Color background_color(78, 120, 238);
 inline Color background_color(67, 137, 210);
+inline Color SKY_HORIZON(180, 215, 245);
+inline Color SKY_ZENITH(65, 135, 220);
 
 // LIGHT
 inline Color COLOR_LIGHT1(21,230,230);
@@ -22,7 +24,7 @@ inline Color COLOR_LIGHT2(0,255,202);
 inline Color COLOR_LIGHT3(255,0,233);
 inline Color COLOR_LIGHT4(94,229,0);
 inline Color COLOR_FLOOR(21,21,21);
-inline Color SUN(100,100,100);
+inline Color SUN(255, 235, 200);
 
 // bounding box du volume
 inline float BOX_MIN_X = -325.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -325.0f;
@@ -56,23 +58,29 @@ inline float K_WORLEY = 0.2f;
 inline float G_HG=0.5f;
 inline float POWDER_STRENGTH = 6.0f;
 inline float POWDER_AMOUNT = 1.0f;
+inline float AMBIENT_CLOUD_COLOR = 0.2f; // pas dans ui
+
 
 // Wind
 inline float WIND_SPEED = 200;
 inline Vector3 WIND_DIRECTION = Vector3(-1,0,0);
 
 // setup
-
 inline bool debug = false; // -> inline int FOG_STEPS = 5; // précision dans le nuage
-
 inline bool big = false;
-// -> inline float BOX_MIN_X = -500.0f, BOX_MIN_Y = 0.0f, BOX_MIN_Z = -500.0f;
-// -> inline float BOX_MAX_X =  500.0f, BOX_MAX_Y = 350.0f,  BOX_MAX_Z = 500.0f;
-
 inline bool pov = false;
+inline bool JITTER = false;
+inline bool VERTICAL_FALL_OFF = true;
+inline bool HG = false;
+inline bool AMBIENT_CLOUD = true;
+
+// Coverage
+inline bool COVERAGE = false;
+inline int COVERAGE_OCT = 2;
+inline float COVERAGE_FREQ = 0.0015f;
+
 
 class Scene;
-
 void apply_debug_mode();
 void apply_big_mode();
 void apply_pov_mode(Scene& scene);

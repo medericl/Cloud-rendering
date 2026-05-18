@@ -30,7 +30,10 @@ bool intersect_box(const Point3& origin, const Vector3& ray, const Point3& box_m
 float cloud_density(Point3 p, Wind w)
 {
     p = p + w.wind();
-    float shape = vertical_falloff(p.y) * fbm(p * FREQ_SHAPE, OCTAVE);
+    float shape = fbm(p * FREQ_SHAPE, OCTAVE);
+    if (VERTICAL_FALL_OFF)
+        shape *= vertical_falloff(p.y);
+
     float detail = fbm(p * FREQ_DETAIL, OCTAVE);
     //float Worley = pow(1 - worley(p * FREQ_WORLEY),3);
     float wworley = std::max(0.0f, worley(p * FREQ_WORLEY));
@@ -45,7 +48,12 @@ float cloud_density(Point3 p, Wind w)
 
 float hg_phase(Vector3 ray, Vector3 p)
 {
-    Vector3 lightDir = (SUN_POS - p) / (SUN_POS - p).norm();
+    Vector3 sunDir = SUN_POS - p;
+    float sunDistance = sunDir.norm();
+    if (sunDistance <= 1e-6f)
+        return 1.0f;
+
+    Vector3 lightDir = sunDir / sunDistance;
     Vector3 viewDir = ray * -1;
 
     float cosTheta = lightDir.dot(viewDir);
@@ -93,6 +101,11 @@ float sun_density(Point3 p, Wind w)
     return std::max(0.0f, res);
 }
 
+float coveragemask(Point3 p)
+{
+    // 2D cloud coverage mask, controls where clouds appear on the XZ space.
+    return (fbm(Point3(p.x * COVERAGE_FREQ, 0.0f, p.z * COVERAGE_FREQ), COVERAGE_OCT) * 0.5f) + 0.5f;
+}
 
 Color IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t, Wind w)
 {
@@ -113,29 +126,46 @@ Color IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t, Wind w)
         return pixel;
     }
 
-    float accum = 0.0f;
+    Color accum = Color(0,0,0);
     float transmittance = 1.0f;
     float step = (tEnd - tStart) / FOG_STEPS;
     for (int i = 0; i < FOG_STEPS; i++)
     {
         float ti = tStart + i * step;
+        if (JITTER) {
+            float jitter = (std::abs(std::fmod(std::sin(ray.x * 12.9898f + ray.y * 78.233f) * 43758.5453f, 1.0f))) * 3.0f;
+            ti = tStart + (i + jitter) * step;
+        }
         Point3 p = (origin + ray * ti);
 
         float density = cloud_density(p, w);
-        if (density < 0) {
-            continue;;
+
+        if (COVERAGE) {
+            density *= coveragemask(p);
         }
 
-        float lightDepth = sun_density(p,w);
-        float sun_transmittance = beer_powder(lightDepth); // cmb les nuage bloque la lumiere
-        float hg = hg_phase(ray, p);
+        if (density <= 0.0001f) {
+            continue;
+        }
+
+        float sun_transmittance = beer_powder(sun_density(p,w)); // cmb les nuage bloque la lumiere
+        float hg = hg_phase(ray, p); // reflets
 
         //accum += transmittance * sun_transmittance * density * step * hg;
-        accum += transmittance * sun_transmittance * density * step;
+        Color incomingLight = SUN * sun_transmittance;
+        float light = transmittance * density * step;
+        if (HG)
+            accum += (fog_color * incomingLight) / 255.0f * light * hg;
+        else
+            accum += (fog_color * incomingLight) / 255.0f * light;
+
+        if (AMBIENT_CLOUD)
+            accum += fog_color * AMBIENT_CLOUD_COLOR * light;
+
         transmittance *= std::exp(-density * step);
         if (transmittance <= 0.001f)
             break;
     }
 
-    return pixel * transmittance + fog_color * accum;
+    return pixel * transmittance + accum;
 }

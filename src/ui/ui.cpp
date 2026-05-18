@@ -15,11 +15,6 @@ static void color_edit(const char* label, Color& c)
 static void translate_camera(Scene& scene, const Vector3& delta)
 {
     scene.camera.origin = scene.camera.origin + delta;
-    scene.camera.p = scene.camera.p + delta;
-    scene.camera.plan_image.p_right_up = scene.camera.plan_image.p_right_up + delta;
-    scene.camera.plan_image.p_left_up = scene.camera.plan_image.p_left_up + delta;
-    scene.camera.plan_image.p_right_down = scene.camera.plan_image.p_right_down + delta;
-    scene.camera.plan_image.p_left_down = scene.camera.plan_image.p_left_down + delta;
 }
 
 static void rebuild_camera_plan(Scene& scene)
@@ -35,13 +30,15 @@ static void rebuild_camera_plan(Scene& scene)
 static void update_camera_keyboard(Scene& scene)
 {
     static float camera_speed = 300.0f;
-    static float target_speed = 300.0f;
+    static float target_speed = 80.0f;
 
     Vector3 forward = scene.camera.p - scene.camera.origin;
     forward = forward / forward.norm();
 
     Vector3 right = scene.camera.direction_up.p_v(forward);
     right = right / right.norm();
+    Vector3 up = forward.p_v(right);
+    up = up / up.norm();
 
     Vector3 movement(0, 0, 0);
     if (ImGui::IsKeyDown(ImGuiKey_W))
@@ -56,13 +53,14 @@ static void update_camera_keyboard(Scene& scene)
     if (movement.norm() > 0.0f) {
         movement = movement / movement.norm();
         translate_camera(scene, movement * camera_speed * ImGui::GetIO().DeltaTime);
+        rebuild_camera_plan(scene);
     }
 
     Vector3 target_movement(0, 0, 0);
     if (ImGui::IsKeyDown(ImGuiKey_UpArrow))
-        target_movement = target_movement + forward;
+        target_movement = target_movement + up;
     if (ImGui::IsKeyDown(ImGuiKey_DownArrow))
-        target_movement = target_movement - forward;
+        target_movement = target_movement - up;
     if (ImGui::IsKeyDown(ImGuiKey_LeftArrow))
         target_movement = target_movement - right;
     if (ImGui::IsKeyDown(ImGuiKey_RightArrow))
@@ -76,7 +74,7 @@ static void update_camera_keyboard(Scene& scene)
 
     if (ImGui::CollapsingHeader("Camera")) {
         ImGui::SliderFloat("Camera speed", &camera_speed, 10.0f, 2000.0f);
-        ImGui::SliderFloat("Target speed", &target_speed, 10.0f, 2000.0f);
+        ImGui::SliderFloat("Target speed", &target_speed, 1.0f, 500.0f);
         ImGui::Text("Position: %.1f %.1f %.1f", scene.camera.origin.x, scene.camera.origin.y, scene.camera.origin.z);
         ImGui::Text("Target: %.1f %.1f %.1f", scene.camera.p.x, scene.camera.p.y, scene.camera.p.z);
     }
@@ -92,7 +90,19 @@ void render_ui(Scene& scene)
         ImGui::Checkbox("Debug", &debug);
         ImGui::Checkbox("Big cloud zone", &big);
         ImGui::Checkbox("Cloud POV", &pov);
+        ImGui::Checkbox("Jitter", &JITTER);
+        ImGui::Checkbox("Vertical falloff", &VERTICAL_FALL_OFF);
+        ImGui::Checkbox("Hg phase", &HG);
+        ImGui::Checkbox("Ambiant Cloud", &AMBIENT_CLOUD);
     }
+
+    if (ImGui::CollapsingHeader("Coveragee", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::Checkbox("Coverage", &COVERAGE);
+        ImGui::SliderFloat("Coverage frequency", &COVERAGE_FREQ, 0.0f, 1.0f, "%.4f");
+        ImGui::SliderInt("Coverage octave", &COVERAGE_OCT, 0, 15);
+    }
+
+
 
     update_render_modes(scene);
 
@@ -152,6 +162,8 @@ void render_ui(Scene& scene)
     if (ImGui::CollapsingHeader("Scene")) {
         color_edit("Ambient",    ambient_color);
         color_edit("Background", background_color);
+        color_edit("Sky horizon", SKY_HORIZON);
+        color_edit("Sky zenith", SKY_ZENITH);
         color_edit("Floor",      COLOR_FLOOR);
         color_edit("Sun",        SUN);
     }
