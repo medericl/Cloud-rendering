@@ -56,7 +56,7 @@ void run_window(int width, int height, Camera cam)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 
-    Scene scene(cam, vector_light(), {}, vector_cube());
+    Scene scene(cam, vector_light(), {});
 
     while (!glfwWindowShouldClose(window)) {
         float x_offset = std::sin(glfwGetTime()) * 300.0f;

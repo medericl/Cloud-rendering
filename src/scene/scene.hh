@@ -5,7 +5,6 @@
 #include "light.hh"
 #include "../image/image.hh"
 #include "sphere.hh"
-#include "cube.hh"
 #include "../vector/vector.hh"
 #include "../cloud/wind.hh"
 
@@ -13,13 +12,12 @@ class Scene {
 public:
 
     Camera camera;
-    Cube floor;
     std::vector<Light> list_light;
     std::vector<Sphere> list_sphere;
     Wind wind;
 
     Scene();
-    Scene(Camera Camera, std::vector<Light> list_light, std::vector<Sphere> list_sphere, std::vector<Cube> list_cube = {});
+    Scene(Camera Camera, std::vector<Light> list_light, std::vector<Sphere> list_sphere);
     void ray_tracing(Image& image);
     float ray_march(Vector3 ray, Point3 origin);
 

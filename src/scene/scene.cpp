@@ -15,9 +15,8 @@ static Color sky_color(const Vector3& ray)
     return SKY_HORIZON * (1.0f - t) + SKY_ZENITH * t;
 }
 
-Scene::Scene(Camera Camera, std::vector<Light> List_light, std::vector<Sphere> List_sphere,
-             std::vector<Cube> List_cube)
-: camera(Camera), list_light(List_light), list_sphere(List_sphere), floor(Cube(Point3(0, 0, 0), Vector3(400, 12, 400), Color(30, 30, 30)))
+Scene::Scene(Camera Camera, std::vector<Light> List_light, std::vector<Sphere> List_sphere)
+: camera(Camera), list_light(List_light), list_sphere(List_sphere)
 { };
 
 float Scene::sdf_diff(Vector3 p) {
