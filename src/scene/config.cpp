@@ -6,6 +6,7 @@ static bool big_was_enabled = false;
 static bool pov_was_enabled = false;
 static bool sunset_was_enabled = false;
 
+
 static Color sunset_saved_sky_horizon = SKY_HORIZON;
 static Color sunset_saved_sky_zenith  = SKY_ZENITH;
 static Color sunset_saved_sun         = SUN;
