@@ -21,6 +21,10 @@ static Color sky_color(const Vector3& ray)
             float align = std::max(0.0f, ray.dot(sun_dir));
             float glow  = std::pow(align, 6.0f) * 90.0f;
             base = base + Color(glow, glow * 0.35f, glow * 0.05f);
+            if (align > 0.9990f) {
+                float s = std::min(1.0f, (align - 0.9990f) / 0.0008f);
+                base = base + Color(255 * s, 210 * s, 80 * s);
+            }
         }
     }
     return base;

@@ -23,23 +23,24 @@ static Point3 hash3(int x, int y, int z)
 
 float worley(Point3 p)
 {
-    float min = HUGE_VAL;
-    for (int i = -1; i < 2; i += 1)
-    {
-    for (int j = -1; j < 2; j += 1)
-    {
-    for (int k = -1; k < 2; k += 1)
-    {
+    int ix = (int)std::floor(p.x);
+    int iy = (int)std::floor(p.y);
+    int iz = (int)std::floor(p.z);
+    float min_sq = HUGE_VAL;
 
-        Point3 a = hash3(std::floor(p.x) + i, std::floor(p.y) + j, std::floor(p.z) + k);
-        a.x += std::floor(p.x) + i;
-        a.y += std::floor(p.y) + j;
-        a.z += std::floor(p.z) + k;
-        float dist = (p - a).norm();
-        min = std::min(dist, min);
+    for (int i = -1; i < 2; i++)
+    for (int j = -1; j < 2; j++)
+    for (int k = -1; k < 2; k++)
+    {
+        Point3 a = hash3(ix + i, iy + j, iz + k);
+        a.x += ix + i;
+        a.y += iy + j;
+        a.z += iz + k;
+        float dx = p.x - a.x;
+        float dy = p.y - a.y;
+        float dz = p.z - a.z;
+        float dist_sq = dx*dx + dy*dy + dz*dz;
+        if (dist_sq < min_sq) min_sq = dist_sq;
     }
-    }
-    }
-
-    return min;
+    return std::sqrt(min_sq);
 }

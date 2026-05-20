@@ -72,6 +72,15 @@ float beer_powder(float lightDepth)
     return std::max(0.0f, std::min(1.0f, beerPowder));
 }
 
+static float cloud_density_fast(Point3 p, Wind w)
+{
+    p = p + w.wind();
+    float shape = fbm(p * FREQ_SHAPE, OCTAVE);
+    if (VERTICAL_FALL_OFF)
+        shape *= vertical_falloff(p.y);
+    return std::max(0.0f, DENSITY * shape * CLOUD_COVERAGE);
+}
+
 float sun_density(Point3 p, Wind w)
 {
     Vector3 sun_ray = SUN_POS - p;
@@ -96,7 +105,7 @@ float sun_density(Point3 p, Wind w)
     for (int i = 0; i < SUN_STEPS; i++)
     {
         Point3 sample = p + sun_ray * (i * step);
-        res += cloud_density(sample, w) * step;
+        res += cloud_density_fast(sample, w) * step;
     }
     return std::max(0.0f, res);
 }
