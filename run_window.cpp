@@ -56,7 +56,7 @@ void run_window(int width, int height, Camera cam)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 
-    Scene scene(cam, vector_light(), {}, vector_cube());
+    Scene scene(cam, vector_light(), {});
 
     Point3 origin = cam.origin;
     float yaw   = 135.0f;
