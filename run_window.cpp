@@ -52,14 +52,52 @@ void run_window(int width, int height, Camera cam)
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 
     Scene scene(cam, vector_light(), {}, vector_cube());
 
+    Point3 origin = cam.origin;
+    float yaw   = 135.0f;
+    float pitch = -20.6f;
+    float speed = 5.0f;
+    double last_mx = -1, last_my = -1;
+
     while (!glfwWindowShouldClose(window)) {
         float x_offset = std::sin(glfwGetTime()) * 300.0f;
+
+        // mouse look (only while left button held)
+        double mx, my;
+        glfwGetCursorPos(window, &mx, &my);
+        bool clicking = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+#ifndef NO_UI
+        clicking = clicking && !ImGui::GetIO().WantCaptureMouse;
+#endif
+        if (clicking && last_mx >= 0) {
+            yaw   -= (float)(mx - last_mx) * 0.2f;
+            pitch -= (float)(my - last_my) * 0.2f;
+            if (pitch >  89.0f) pitch =  89.0f;
+            if (pitch < -89.0f) pitch = -89.0f;
+        }
+        last_mx = clicking ? mx : -1;
+        last_my = clicking ? my : -1;
+
+        // direction vectors from yaw/pitch
+        float ry = yaw   * (float)M_PI / 180.0f;
+        float rp = pitch * (float)M_PI / 180.0f;
+        Vector3 forward(std::cos(rp) * std::cos(ry), std::sin(rp), std::cos(rp) * std::sin(ry));
+        Vector3 world_up(0, 1, 0);
+        Vector3 right = world_up.p_v(forward);
+        right = right / right.norm();
+
+        // WASD movement
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) origin = origin + forward * speed;
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) origin = origin - forward * speed;
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) origin = origin - right * speed;
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) origin = origin + right * speed;
+
+        scene.camera = Camera(origin, origin + forward * 100.0f, world_up, (float)width, (float)height);
 
         render_to_pixels(width, height, x_offset, pixels, scene);
         glBindTexture(GL_TEXTURE_2D, tex);

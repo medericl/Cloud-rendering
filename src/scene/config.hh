@@ -61,6 +61,10 @@ inline float POWDER_AMOUNT = 1.0f;
 inline float AMBIENT_CLOUD_COLOR = 0.2f; // pas dans ui
 
 
+// Terrain
+inline float TERRAIN_TEXTURE = 0.75f; // 0=dark earth, 0.5=green, 1=rock
+inline float TERRAIN_SCALE   = 1.0f; // vertical height multiplier
+
 // Wind
 inline float WIND_SPEED = 200;
 inline Vector3 WIND_DIRECTION = Vector3(-1,0,0);

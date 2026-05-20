@@ -126,6 +126,11 @@ void render_ui(Scene& scene)
         ImGui::SliderFloat("Wind Speed",    &WIND_SPEED,   0.0f,  1000.0f,  "%.4f");
     }
 
+    if (ImGui::CollapsingHeader("Terrain", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::SliderFloat("Texture (earth/green/rock)", &TERRAIN_TEXTURE, 0.0f, 1.0f, "%.2f");
+        ImGui::SliderFloat("Height scale",               &TERRAIN_SCALE,   0.0f, 3.0f, "%.2f");
+    }
+
     if (ImGui::CollapsingHeader("Bounding box")) {
         ImGui::SliderFloat("Box min X",  &BOX_MIN_X, -500.0f,   0.0f);
         ImGui::SliderFloat("Box min Y",  &BOX_MIN_Y, -100.0f, 200.0f);

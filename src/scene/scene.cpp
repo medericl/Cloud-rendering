@@ -4,6 +4,7 @@
 #include "../vector/vector.hh"
 #include "../cloud/volume.hh"
 #include "config.hh"
+#include "terrain.hh"
 
 #include <algorithm>
 #include <cmath>
@@ -114,7 +115,12 @@ void Scene::ray_tracing(Image& image)
             Vector3 ray = (point - camera.origin) / (point - camera.origin).norm();
             Color pixel = sky_color(ray);
 
-            Color finalColor = IntegrateVolume(camera.origin, ray, pixel, 0.0f, wind);
+            float t_terrain = -1.0f;
+            Color terrain_col;
+            if (terrain_hit(camera.origin, ray, t_terrain, terrain_col))
+                pixel = terrain_col;
+
+            Color finalColor = IntegrateVolume(camera.origin, ray, pixel, t_terrain > 0.0f ? t_terrain : 0.0f, wind);
             image.setPixel(x, y, finalColor);
         }
     }
