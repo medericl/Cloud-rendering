@@ -2,6 +2,8 @@
 #include "../image/color.hh"
 #include "../vector/vector.hh"
 
+inline bool SUNSET = false;
+
 // RAY
 inline float kd = 0.9f;
 inline float ks = 0.33f;
@@ -25,6 +27,7 @@ inline Color COLOR_LIGHT3(255,0,233);
 inline Color COLOR_LIGHT4(94,229,0);
 inline Color COLOR_FLOOR(21,21,21);
 inline Color COLOR_SUN(255, 235, 200);
+inline Color SUN(255, 235, 200);
 inline Point3 SUN_POS(500.0f, 2000.0f, 500.0f);
 
 // bounding box du volume
@@ -78,7 +81,6 @@ inline float WIND_SPEED = 200;
 inline Vector3 WIND_DIRECTION = Vector3(-1,0,0);
 
 // setup
-inline bool SUNSET = false;
 inline bool debug = false; // -> inline int FOG_STEPS = 5; // précision dans le nuage
 inline bool high_res = false;
 inline bool low_res = false;
@@ -111,7 +113,6 @@ inline bool FOG = false;
 inline bool CLOUD2 = false;
 
 inline bool DAY = false;
-inline bool SUNSET = false;
 inline bool SUNRISE = false;
 
 enum class CloudPreset {

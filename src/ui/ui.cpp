@@ -207,4 +207,4 @@ void render_ui(Scene& scene)
     ImGui::Text("Spheres: %zu", scene.list_sphere.size());
 
     ImGui::End();
-}
+}}
