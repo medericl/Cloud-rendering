@@ -87,6 +87,7 @@ void render_ui(Scene& scene)
     update_camera_keyboard(scene);
 
     if (ImGui::CollapsingHeader("Modes", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::Checkbox("Sunset", &SUNSET);
         ImGui::Checkbox("Debug", &debug);
         ImGui::Checkbox("Big cloud zone", &big);
         ImGui::Checkbox("Cloud POV", &pov);

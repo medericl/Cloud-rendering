@@ -4,6 +4,22 @@
 static bool debug_was_enabled = false;
 static bool big_was_enabled = false;
 static bool pov_was_enabled = false;
+static bool sunset_was_enabled = false;
+
+static Color sunset_saved_sky_horizon = SKY_HORIZON;
+static Color sunset_saved_sky_zenith  = SKY_ZENITH;
+static Color sunset_saved_sun         = SUN;
+static Point3 sunset_saved_sun_pos    = SUN_POS;
+static Color sunset_saved_fog         = fog_color;
+
+static void apply_sunset_mode()
+{
+    SKY_HORIZON = Color(255, 90, 25);
+    SKY_ZENITH  = Color(20, 10, 60);
+    SUN         = Color(255, 180, 60);
+    SUN_POS     = Point3(1200.0f, 30.0f, 0.0f);
+    fog_color   = Color(255, 140, 70);
+}
 
 static int saved_fog_steps = FOG_STEPS;
 
@@ -110,4 +126,21 @@ void update_render_modes(Scene& scene)
     if (pov)
         apply_pov_mode(scene);
     pov_was_enabled = pov;
+
+    if (SUNSET && !sunset_was_enabled) {
+        sunset_saved_sky_horizon = SKY_HORIZON;
+        sunset_saved_sky_zenith  = SKY_ZENITH;
+        sunset_saved_sun         = SUN;
+        sunset_saved_sun_pos     = SUN_POS;
+        sunset_saved_fog         = fog_color;
+    }
+    if (!SUNSET && sunset_was_enabled) {
+        SKY_HORIZON = sunset_saved_sky_horizon;
+        SKY_ZENITH  = sunset_saved_sky_zenith;
+        SUN         = sunset_saved_sun;
+        SUN_POS     = sunset_saved_sun_pos;
+        fog_color   = sunset_saved_fog;
+    }
+    if (SUNSET) apply_sunset_mode();
+    sunset_was_enabled = SUNSET;
 }

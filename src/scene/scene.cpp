@@ -13,7 +13,17 @@
 static Color sky_color(const Vector3& ray)
 {
     float t = std::max(0.0f, std::min(1.0f, ray.y * 0.5f + 0.5f));
-    return SKY_HORIZON * (1.0f - t) + SKY_ZENITH * t;
+    Color base = SKY_HORIZON * (1.0f - t) + SKY_ZENITH * t;
+    if (SUNSET) {
+        float d = SUN_POS.norm();
+        if (d > 0.01f) {
+            Vector3 sun_dir = SUN_POS / d;
+            float align = std::max(0.0f, ray.dot(sun_dir));
+            float glow  = std::pow(align, 6.0f) * 90.0f;
+            base = base + Color(glow, glow * 0.35f, glow * 0.05f);
+        }
+    }
+    return base;
 }
 
 Scene::Scene(Camera Camera, std::vector<Light> List_light, std::vector<Sphere> List_sphere,
@@ -118,7 +128,6 @@ void Scene::ray_tracing(Image& image)
             float t_terrain = -1.0f;
             Color terrain_col;
             if (terrain_hit(camera.origin, ray, t_terrain, terrain_col)) {
-                // atmospheric perspective: distant terrain fades into sky
                 float fog = std::min(1.0f, t_terrain / 2500.0f);
                 pixel = terrain_col * (1.0f - fog) + SKY_HORIZON * fog;
             }

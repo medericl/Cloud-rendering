@@ -67,7 +67,6 @@ void run_window(int width, int height, Camera cam)
     while (!glfwWindowShouldClose(window)) {
         float x_offset = std::sin(glfwGetTime()) * 300.0f;
 
-        // mouse look (only while left button held)
         double mx, my;
         glfwGetCursorPos(window, &mx, &my);
         bool clicking = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
@@ -83,7 +82,6 @@ void run_window(int width, int height, Camera cam)
         last_mx = clicking ? mx : -1;
         last_my = clicking ? my : -1;
 
-        // direction vectors from yaw/pitch
         float ry = yaw   * (float)M_PI / 180.0f;
         float rp = pitch * (float)M_PI / 180.0f;
         Vector3 forward(std::cos(rp) * std::cos(ry), std::sin(rp), std::cos(rp) * std::sin(ry));
@@ -91,7 +89,6 @@ void run_window(int width, int height, Camera cam)
         Vector3 right = world_up.p_v(forward);
         right = right / right.norm();
 
-        // WASD movement
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) origin = origin + forward * speed;
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) origin = origin - forward * speed;
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) origin = origin - right * speed;

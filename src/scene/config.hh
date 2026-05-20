@@ -70,6 +70,7 @@ inline float WIND_SPEED = 200;
 inline Vector3 WIND_DIRECTION = Vector3(-1,0,0);
 
 // setup
+inline bool SUNSET = false;
 inline bool debug = false; // -> inline int FOG_STEPS = 5; // précision dans le nuage
 inline bool big = false;
 inline bool pov = false;
