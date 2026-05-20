@@ -115,7 +115,8 @@ enum class CloudPreset {
     Stratus,
     Cirrus,
     Cirrocumulus,
-    Nimbus
+    Nimbus,
+    Fog
 };
 
 class Scene;

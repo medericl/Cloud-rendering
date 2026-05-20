@@ -180,7 +180,12 @@ Color IntegrateVolume(Point3 origin, Vector3 ray, Color pixel, float t, Wind w)
         Point3 p = (origin + ray * ti);
 
         if (FOG) {
-               
+            float density = cloud_density(p, w);
+            float volume = transmittance * density * step;
+            accum += volume;
+            transmittance *= std::exp(-density * step);
+            if (transmittance <= 0.001f)
+                break;
         }
 
         float density = cloud_density(p, w);

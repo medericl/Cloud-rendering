@@ -26,8 +26,8 @@ static void select_cloud_type(CloudPreset preset)
     CIRRUS = preset == CloudPreset::Cirrus;
     CIRROCUMULUS = preset == CloudPreset::Cirrocumulus;
     NIMBUS = preset == CloudPreset::Nimbus;
+    FOG = preset == CloudPreset::Fog;
     STORM = false;
-    FOG = false;
 }
 
 static void apply_cumulus_preset()

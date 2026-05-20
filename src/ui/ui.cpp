@@ -100,8 +100,9 @@ void render_ui(Scene& scene)
             apply_cloud_preset(CloudPreset::Cirrocumulus);
         if (ImGui::RadioButton("Nimbus", NIMBUS))
             apply_cloud_preset(CloudPreset::Nimbus);
+        if (ImGui::RadioButton("Fog", FOG))
+            apply_cloud_preset(CloudPreset::Fog);
         ImGui::Checkbox("Storm", &STORM);
-        ImGui::Checkbox("Fog", &FOG);
     }
 
     if (ImGui::CollapsingHeader("Time", ImGuiTreeNodeFlags_DefaultOpen)) {
