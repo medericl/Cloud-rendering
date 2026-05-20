@@ -117,8 +117,11 @@ void Scene::ray_tracing(Image& image)
 
             float t_terrain = -1.0f;
             Color terrain_col;
-            if (terrain_hit(camera.origin, ray, t_terrain, terrain_col))
-                pixel = terrain_col;
+            if (terrain_hit(camera.origin, ray, t_terrain, terrain_col)) {
+                // atmospheric perspective: distant terrain fades into sky
+                float fog = std::min(1.0f, t_terrain / 2500.0f);
+                pixel = terrain_col * (1.0f - fog) + SKY_HORIZON * fog;
+            }
 
             Color finalColor = IntegrateVolume(camera.origin, ray, pixel, t_terrain > 0.0f ? t_terrain : 0.0f, wind);
             image.setPixel(x, y, finalColor);
