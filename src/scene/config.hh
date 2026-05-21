@@ -73,6 +73,7 @@ inline float FREQ_WORLEY = 0.008f;
 inline float K_WORLEY = 0.2f;
 
 // Terrain
+inline bool  TERRAIN         = true;
 inline float TERRAIN_TEXTURE = 0.75f; // 0=dark earth, 0.5=green, 1=rock
 inline float TERRAIN_SCALE   = 1.0f; // vertical height multiplier
 

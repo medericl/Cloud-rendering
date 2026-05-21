@@ -34,8 +34,11 @@ void run_window(int width, int height, Camera cam)
     if (!glfwInit())
         return;
 
-    GLFWwindow* window = glfwCreateWindow(width * 3, height * 3, "Raymarching", nullptr, nullptr);
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Raymarching", nullptr, nullptr);
     if (!window) { glfwTerminate(); return; }
+    glfwMaximizeWindow(window);
     glfwMakeContextCurrent(window);
 
 #ifndef NO_UI
@@ -100,12 +103,20 @@ void run_window(int width, int height, Camera cam)
         glBindTexture(GL_TEXTURE_2D, tex);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, pixels.data());
         glClear(GL_COLOR_BUFFER_BIT);
+
+        int win_w, win_h;
+        glfwGetFramebufferSize(window, &win_w, &win_h);
+        float win_aspect = (float)win_w / (float)win_h;
+        float tex_aspect = (float)width  / (float)height;
+        float qw = (win_aspect > tex_aspect) ? tex_aspect / win_aspect : 1.0f;
+        float qh = (win_aspect > tex_aspect) ? 1.0f : win_aspect / tex_aspect;
+
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_QUADS);
-        glTexCoord2f(0, 0); glVertex2f(-1, -1);
-        glTexCoord2f(1, 0); glVertex2f( 1, -1);
-        glTexCoord2f(1, 1); glVertex2f( 1,  1);
-        glTexCoord2f(0, 1); glVertex2f(-1,  1);
+        glTexCoord2f(0, 0); glVertex2f(-qw, -qh);
+        glTexCoord2f(1, 0); glVertex2f( qw, -qh);
+        glTexCoord2f(1, 1); glVertex2f( qw,  qh);
+        glTexCoord2f(0, 1); glVertex2f(-qw,  qh);
         glEnd();
         glDisable(GL_TEXTURE_2D);
 
@@ -115,6 +126,15 @@ void run_window(int width, int height, Camera cam)
         ImGui::NewFrame();
 
         render_ui(scene);
+
+        // sync local camera state from scene in case a mode (e.g. sunset) moved it
+        origin = scene.camera.origin;
+        {
+            Vector3 fwd = scene.camera.p - scene.camera.origin;
+            fwd = fwd / fwd.norm();
+            pitch = std::asin(std::max(-1.0f, std::min(1.0f, fwd.y))) * 180.0f / (float)M_PI;
+            yaw   = std::atan2(fwd.z, fwd.x)                          * 180.0f / (float)M_PI;
+        }
 
         ImGui::Render();
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

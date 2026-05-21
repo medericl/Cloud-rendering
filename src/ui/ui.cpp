@@ -111,7 +111,6 @@ void render_ui(Scene& scene)
     }
 
     if (ImGui::CollapsingHeader("Modes", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::Checkbox("Sunset", &SUNSET);
         ImGui::Checkbox("Debug", &debug);
         ImGui::Checkbox("Wind", &WIND);
         ImGui::Checkbox("Light", &LIGHT);
@@ -158,6 +157,7 @@ void render_ui(Scene& scene)
     }
 
     if (ImGui::CollapsingHeader("Terrain", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::Checkbox("Show terrain", &TERRAIN);
         ImGui::SliderFloat("Texture (earth/green/rock)", &TERRAIN_TEXTURE, 0.0f, 1.0f, "%.2f");
         ImGui::SliderFloat("Height scale",               &TERRAIN_SCALE,   0.0f, 3.0f, "%.2f");
     if (ImGui::CollapsingHeader("Lights")) {

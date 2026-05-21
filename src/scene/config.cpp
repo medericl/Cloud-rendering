@@ -12,6 +12,9 @@ static Color sunset_saved_sky_zenith  = SKY_ZENITH;
 static Color sunset_saved_sun         = SUN;
 static Point3 sunset_saved_sun_pos    = SUN_POS;
 static Color sunset_saved_fog         = fog_color;
+static Point3 sunset_saved_camera_origin;
+static Point3 sunset_saved_camera_target;
+static Vector3 sunset_saved_camera_up;
 
 static void apply_sunset_mode()
 {
@@ -384,11 +387,19 @@ void update_render_modes(Scene& scene)
     pov_was_enabled = pov;
 
     if (SUNSET && !sunset_was_enabled) {
-        sunset_saved_sky_horizon = SKY_HORIZON;
-        sunset_saved_sky_zenith  = SKY_ZENITH;
-        sunset_saved_sun         = SUN;
-        sunset_saved_sun_pos     = SUN_POS;
-        sunset_saved_fog         = fog_color;
+        sunset_saved_sky_horizon    = SKY_HORIZON;
+        sunset_saved_sky_zenith     = SKY_ZENITH;
+        sunset_saved_sun            = SUN;
+        sunset_saved_sun_pos        = SUN_POS;
+        sunset_saved_fog            = fog_color;
+        sunset_saved_camera_origin  = scene.camera.origin;
+        sunset_saved_camera_target  = scene.camera.p;
+        sunset_saved_camera_up      = scene.camera.direction_up;
+        float w = scene.camera.plan_image.p_image_width;
+        float h = scene.camera.plan_image.p_image_height;
+        scene.camera.origin = Point3(-474.7f, 101.2f, 69.2f);
+        scene.camera.p      = Point3(-375.4f,  98.3f, 80.3f);
+        scene.camera.plan_image = Plan_image(scene.camera.p, scene.camera.p - scene.camera.origin, scene.camera.direction_up, w, h);
     }
     if (!SUNSET && sunset_was_enabled) {
         SKY_HORIZON = sunset_saved_sky_horizon;
@@ -396,6 +407,12 @@ void update_render_modes(Scene& scene)
         SUN         = sunset_saved_sun;
         SUN_POS     = sunset_saved_sun_pos;
         fog_color   = sunset_saved_fog;
+        float w = scene.camera.plan_image.p_image_width;
+        float h = scene.camera.plan_image.p_image_height;
+        scene.camera.origin         = sunset_saved_camera_origin;
+        scene.camera.p              = sunset_saved_camera_target;
+        scene.camera.direction_up   = sunset_saved_camera_up;
+        scene.camera.plan_image = Plan_image(scene.camera.p, scene.camera.p - scene.camera.origin, scene.camera.direction_up, w, h);
     }
     if (SUNSET) apply_sunset_mode();
     sunset_was_enabled = SUNSET;
