@@ -87,6 +87,7 @@ inline bool WIND = true;
 inline bool WORLEY_ = true;
 inline bool W1 = false;
 inline bool WORLEY_MIX = false;
+inline bool sitf = false;
 
 // Coverage
 inline bool COVERAGE = false;

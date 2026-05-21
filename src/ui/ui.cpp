@@ -2,6 +2,8 @@
 #include "../scene/config.hh"
 #include "imgui.h"
 
+#include <algorithm>
+
 static void color_edit(const char* label, Color& c)
 {
     float col[3] = { c.r / 255.f, c.g / 255.f, c.b / 255.f };
@@ -26,6 +28,28 @@ static void rebuild_camera_plan(Scene& scene)
         scene.camera.direction_up,
         scene.camera.plan_image.p_image_width,
         scene.camera.plan_image.p_image_height);
+}
+
+static void update_sun_in_the_face(Scene& scene)
+{
+    Vector3 forward = scene.camera.p - scene.camera.origin;
+    float forward_norm = forward.norm();
+    if (forward_norm <= 0.0001f)
+        return;
+
+    forward = forward / forward_norm;
+
+    Point3 box_center(
+        (BOX_MIN_X + BOX_MAX_X) * 0.5f,
+        (BOX_MIN_Y + BOX_MAX_Y) * 0.5f,
+        (BOX_MIN_Z + BOX_MAX_Z) * 0.5f);
+    Vector3 box_size(BOX_MAX_X - BOX_MIN_X, BOX_MAX_Y - BOX_MIN_Y, BOX_MAX_Z - BOX_MIN_Z);
+    float box_radius = box_size.norm() * 0.5f;
+    float center_distance = (box_center - scene.camera.origin).dot(forward);
+    float sun_distance = std::max(1000.0f, center_distance + box_radius + 800.0f);
+
+    SUN_POS = scene.camera.origin + forward * sun_distance;
+    SUN_POS.y += box_radius * 0.35f;
 }
 
 static void update_camera_keyboard(Scene& scene)
@@ -114,6 +138,7 @@ void render_ui(Scene& scene)
     if (ImGui::CollapsingHeader("Modes", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::Checkbox("Wind", &WIND);
         ImGui::Checkbox("Light", &LIGHT);
+        ImGui::Checkbox("sun in the face", &sitf);
         ImGui::Checkbox("Low resolution", &low_res);
         ImGui::Checkbox("High resolution", &high_res);
         ImGui::Checkbox("Big cloud zone", &big);
@@ -176,6 +201,9 @@ void render_ui(Scene& scene)
         ImGui::SliderFloat("Sun Y", &SUN_POS.y, -100.0f, 4000.0f);
         ImGui::SliderFloat("Sun Z", &SUN_POS.z, -1000.0f, 1000.0f);
     }
+
+    if (sitf)
+        update_sun_in_the_face(scene);
 
     if (ImGui::CollapsingHeader("Bounding box")) {
         ImGui::SliderFloat("Box min X",  &BOX_MIN_X, -500.0f,   0.0f);
