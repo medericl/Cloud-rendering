@@ -43,7 +43,8 @@ inline Color CLOUD_SHADOW_COLOR(70, 95, 145);
 // Cloud
 //inline float DENSITY = 0.1f;
 inline float DENSITY = 0.05f;
-inline int FOG_STEPS = 25; // précision dans le nuage
+//inline int FOG_STEPS = 25; // précision dans le nuage
+inline int FOG_STEPS = 35; // précision dans le nuage
 inline int SUN_STEPS = 5;
 inline float INITIAL_AMPLITUDE = 0.4f;
 inline float INITIAL_FREQUENCY = 0.0096f; // taille nuage
@@ -62,7 +63,7 @@ inline float K_HG=0.3f;
 inline float G_HG=0.5f;
 inline float G_HG_SILVER=0.9f;
 inline float POWDER_STRENGTH = 6.0f;
-inline float POWDER_AMOUNT = 1.0f;
+inline float POWDER_AMOUNT = 0.5f;
 inline float K_AMBIENT_CLOUD= 0.4f; // pas dans ui
 
 // WORLEY
@@ -122,6 +123,9 @@ enum class CloudPreset {
 
 class Scene;
 void apply_cloud_preset(CloudPreset preset);
+void apply_day_preset();
+void apply_sunset_preset();
+void apply_sunrise_preset();
 void apply_high_res_mode();
 void apply_low_res_mode();
 void apply_big_mode();

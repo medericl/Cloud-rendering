@@ -23,7 +23,6 @@ static void select_cloud_type(CloudPreset preset)
     CLOUD2 = preset == CloudPreset::Cloud2;
     TOWERING_CUMULUS = preset == CloudPreset::ToweringCumulus;
     STRATUS = preset == CloudPreset::Stratus;
-    CIRRUS = preset == CloudPreset::Cirrus;
     CIRROCUMULUS = preset == CloudPreset::Cirrocumulus;
     NIMBUS = preset == CloudPreset::Nimbus;
     FOG = preset == CloudPreset::Fog;
@@ -34,7 +33,7 @@ static void apply_cumulus_preset()
 {
     fog_color = Color(220, 220, 220);
     DENSITY = 0.05f;
-    FOG_STEPS = 25;
+    FOG_STEPS = 35;
     SUN_STEPS = 5;
     INITIAL_AMPLITUDE = 0.4f;
     INITIAL_FREQUENCY = 0.0096f;
@@ -66,7 +65,7 @@ static void apply_towering_cumulus_preset()
 {
     fog_color = Color(220, 220, 220);
     DENSITY = 0.05f;
-    FOG_STEPS = 25;
+    FOG_STEPS = 35;
     SUN_STEPS = 5;
     INITIAL_AMPLITUDE = 0.4f;
     INITIAL_FREQUENCY = 0.0096f;
@@ -99,7 +98,7 @@ static void apply_cloud2_preset()
 {
     fog_color = Color(220, 220, 220);
     DENSITY = 0.07f;
-    FOG_STEPS = 25;
+    FOG_STEPS = 35;
     SUN_STEPS = 5;
     INITIAL_FREQUENCY = 0.0066f;
     INITIAL_AMPLITUDE = 0.926f;
@@ -130,16 +129,15 @@ static void apply_cloud2_preset()
 
 
 
-
 static void apply_stratus_preset()
 {
     fog_color = Color(220, 220, 220);
     DENSITY = 0.05f;
-    FOG_STEPS = 25;
+    FOG_STEPS = 35;
     SUN_STEPS = 5;
-    INITIAL_AMPLITUDE = 0.3736f;
-    INITIAL_FREQUENCY = 0.02f;
-    FREQ_SHAPE = 0.7577f;
+    INITIAL_AMPLITUDE = 0.2836f;
+    INITIAL_FREQUENCY = 0.0078f;
+    FREQ_SHAPE = 0.07f;
     FREQ_DETAIL = 4.0f;
     OCTAVE = 4;
     LACUNARITY = 1.2273f;
@@ -159,42 +157,11 @@ static void apply_stratus_preset()
     BOX_MAX_Y = 230.0f;
 }
 
-static void apply_cirrus_preset()
-{
-    fog_color = Color(220, 220, 220);
-    DENSITY = 0.018f;
-    FOG_STEPS = 32;
-    SUN_STEPS = 4;
-    INITIAL_AMPLITUDE = 0.22f;
-    INITIAL_FREQUENCY = 0.014f;
-    FREQ_SHAPE = 1.25f;
-    FREQ_DETAIL = 6.5f;
-    OCTAVE = 5;
-    LACUNARITY = 2.15f;
-    GAIN = 0.42f;
-    K_DETAIL = 0.2f;
-    CLOUD_COVERAGE = 0.9f;
-    FALL_OFF_BOTTOM = 0.45f;
-    FALL_OFF_TOP = 0.95f;
-    FREQ_WORLEY = 0.018f;
-    K_WORLEY = 0.08f;
-    VERTICAL_FALL_OFF = true;
-    WORLEY_ = false;
-    W1 = false;
-    WORLEY_MIX = true;
-    COVERAGE = true;
-    COVERAGE_OCT = 3;
-    COVERAGE_FREQ = 0.0025f;
-    K_COVERAGE = 1.2f;
-    BOX_MIN_Y = 0.0f;
-    BOX_MAX_Y = 230.0f;
-}
-
 static void apply_cirrocumulus_preset()
 {
     fog_color = Color(220, 220, 220);
     DENSITY = 0.098f;
-    FOG_STEPS = 25;
+    FOG_STEPS = 35;
     SUN_STEPS = 5;
     INITIAL_FREQUENCY = 0.0117f;
     INITIAL_AMPLITUDE = 1.226f;
@@ -227,16 +194,16 @@ static void apply_nimbus_preset()
 {
     fog_color = Color(121, 122, 124);
     DENSITY = 0.2541f;
-    FOG_STEPS = 25;
+    FOG_STEPS = 35;
     SUN_STEPS = 5;
-    INITIAL_AMPLITUDE = 0.4f;
+    INITIAL_AMPLITUDE = 0.45f;
     INITIAL_FREQUENCY = 0.0096f;
-    FREQ_SHAPE = 0.7577f;
+    FREQ_SHAPE = 0.3172f;
     FREQ_DETAIL = 4.0f;
     OCTAVE = 4;
     LACUNARITY = 1.8f;
     GAIN = 0.3f;
-    K_DETAIL = 0.7f;
+    K_DETAIL = 0.24f;
     CLOUD_COVERAGE = 1.5f;
     FALL_OFF_BOTTOM = 0.1f;
     FALL_OFF_TOP = 0.6f;
@@ -250,9 +217,49 @@ static void apply_nimbus_preset()
     COVERAGE_OCT = 2;
     COVERAGE_FREQ = 0.0015f;
     K_COVERAGE = 1.0f;
-    WIND_SPEED = 200.0f;
+    WIND_SPEED = 100.0f;
     BOX_MIN_Y = 0.0f;
     BOX_MAX_Y = 230.0f;
+}
+
+static void apply_fog_preset()
+{
+    fog_color = Color(220, 220, 220);
+    DENSITY = 0.0026f;
+}
+
+static void select_time(bool day, bool sunset, bool sunrise)
+{
+    DAY = day;
+    SUNSET = sunset;
+    SUNRISE = sunrise;
+}
+
+void apply_day_preset()
+{
+    select_time(true, false, false);
+    COLOR_SUN = Color(255, 235, 200);
+    SKY_HORIZON = Color(180, 215, 245);
+    SKY_ZENITH = Color(65, 135, 220);
+    POWDER_STRENGTH = 6.0f;
+}
+
+void apply_sunset_preset()
+{
+    select_time(false, true, false);
+    COLOR_SUN = Color(255, 148, 68);
+    SKY_HORIZON = Color(235, 178, 155);
+    SKY_ZENITH = Color(125, 75, 193);
+    POWDER_STRENGTH = 10.0f;
+}
+
+void apply_sunrise_preset()
+{
+    select_time(false, false, true);
+    COLOR_SUN = Color(255, 205, 145);
+    SKY_HORIZON = Color(245, 190, 165);
+    SKY_ZENITH = Color(145, 175, 225);
+    POWDER_STRENGTH = 8.0f;
 }
 
 void apply_cloud_preset(CloudPreset preset)
@@ -267,12 +274,12 @@ void apply_cloud_preset(CloudPreset preset)
         apply_towering_cumulus_preset();
     else if (preset == CloudPreset::Stratus)
         apply_stratus_preset();
-    else if (preset == CloudPreset::Cirrus)
-        apply_cirrus_preset();
     else if (preset == CloudPreset::Cirrocumulus)
         apply_cirrocumulus_preset();
     else if (preset == CloudPreset::Nimbus)
         apply_nimbus_preset();
+    else if (preset == CloudPreset::Fog)
+        apply_fog_preset();
 }
 
 void apply_low_res_mode()

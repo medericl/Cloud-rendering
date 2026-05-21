@@ -112,46 +112,45 @@ void render_ui(Scene& scene)
     if (ImGui::CollapsingHeader("Types of Clouds", ImGuiTreeNodeFlags_DefaultOpen)) {
         if (ImGui::RadioButton("Cumulus", CUMULUS))
             apply_cloud_preset(CloudPreset::Cumulus);
-        if (ImGui::RadioButton("Cloud2", CLOUD2))
+        if (ImGui::RadioButton("Cumulus 2", CLOUD2))
             apply_cloud_preset(CloudPreset::Cloud2);
-        if (ImGui::RadioButton("Towering Cumulus", TOWERING_CUMULUS))
+        if (ImGui::RadioButton("Cumulus 3", TOWERING_CUMULUS))
             apply_cloud_preset(CloudPreset::ToweringCumulus);
         if (ImGui::RadioButton("Stratus", STRATUS))
             apply_cloud_preset(CloudPreset::Stratus);
-        if (ImGui::RadioButton("Cirrus", CIRRUS))
-            apply_cloud_preset(CloudPreset::Cirrus);
         if (ImGui::RadioButton("Cirrocumulus", CIRROCUMULUS))
             apply_cloud_preset(CloudPreset::Cirrocumulus);
         if (ImGui::RadioButton("Nimbus", NIMBUS))
             apply_cloud_preset(CloudPreset::Nimbus);
         if (ImGui::RadioButton("Fog", FOG))
             apply_cloud_preset(CloudPreset::Fog);
-        ImGui::Checkbox("Storm", &STORM);
     }
 
     if (ImGui::CollapsingHeader("Time", ImGuiTreeNodeFlags_DefaultOpen)) {
-        ImGui::Checkbox("Day", &DAY); // white clouds - less than 2000 meters
-        ImGui::Checkbox("Sunset", &SUNSET); // flat clouds - have a lot of impact in the temperature and lights
-        ImGui::Checkbox("Sunrise", &SUNRISE); // 7000 - 14000 meters ice crestals
+        if (ImGui::RadioButton("Day", DAY))
+            apply_day_preset();
+        if (ImGui::RadioButton("Sunset", SUNSET))
+            apply_sunset_preset();
+        if (ImGui::RadioButton("Sunrise", SUNRISE))
+            apply_sunrise_preset();
     }
 
     if (ImGui::CollapsingHeader("Modes", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::Checkbox("Wind", &WIND);
-        ImGui::Checkbox("Light", &LIGHT);
-        ImGui::Checkbox("sun in the face", &sitf);
+        //ImGui::Checkbox("sun in the face", &sitf);
         ImGui::Checkbox("Low resolution", &low_res);
-        ImGui::Checkbox("High resolution", &high_res);
+        //ImGui::Checkbox("High resolution", &high_res);
         ImGui::Checkbox("Big cloud zone", &big);
         ImGui::Checkbox("Cloud POV", &pov);
+        ImGui::Checkbox("Light", &LIGHT);
         ImGui::Checkbox("Hg phase", &HG);
-        ImGui::Checkbox("Ambiant Cloud", &AMBIENT_CLOUD);
         ImGui::Checkbox("Vertical falloff", &VERTICAL_FALL_OFF);
-        ImGui::Checkbox("Jitter", &JITTER);
+        //ImGui::Checkbox("Jitter", &JITTER);
         ImGui::Checkbox("Worley ", &WORLEY_);
-        ImGui::Checkbox("W1", &W1);
+        //ImGui::Checkbox("W1", &W1);
     }
 
-    if (ImGui::CollapsingHeader("Coveragee", ImGuiTreeNodeFlags_DefaultOpen)) {
+    if (ImGui::CollapsingHeader("Coverage ", ImGuiTreeNodeFlags_DefaultOpen)) {
         ImGui::Checkbox("Coverage", &COVERAGE);
         ImGui::SliderFloat("K Coverage", &K_COVERAGE, 0.5f, 1.5f, "%.4f");
         ImGui::SliderFloat("Coverage frequency", &COVERAGE_FREQ, 0.0f, 1.0f, "%.4f");
@@ -179,6 +178,7 @@ void render_ui(Scene& scene)
         ImGui::SliderFloat("Worley",    &K_WORLEY,   0.0f,  0.9f,  "%.4f");
         ImGui::SliderFloat("Worley frequency",    &FREQ_WORLEY,   0.0f,  0.04f,  "%.4f");
         ImGui::SliderFloat("Wind Speed",    &WIND_SPEED,   0.0f,  1000.0f,  "%.4f");
+        ImGui::Checkbox("Ambiant Cloud", &AMBIENT_CLOUD);
     }
 
     if (ImGui::CollapsingHeader("Lights")) {
